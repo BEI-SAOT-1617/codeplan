@@ -1,32 +1,44 @@
 #include <iostream>
 // #include <stdlib.h>
 // #include <stdio.h>
-#include <string.h>
+#include <string>
 #include <fstream>
+#include "plan.h"
 
 using namespace std;
 
-int sizeMAX_planLine = 100;
-int sizeMAX_photoname = 90; // 100 - (10 caracters fixes)
-
-void lecturePlan( ){ //string *Plan, int NInstructions
+void lecturePlan( ){
+	
 	ifstream  readFile;
 	readFile.open("plan.txt");
-cout << "Lecture du plan \n";
-	char planLine[sizeMAX_planLine];
-	string planLine2;
+	string type;
+	
+	cout << "Starting the reading of a plan \n";
+	
+	GenericInstruction * planInstruction;
+	string planLine;
 	int line = 0;
-
+	
 	if (readFile.is_open())	{
-		while(  getline (readFile, planLine2) ) {
+		while(  getline (readFile, planLine) ) {
 			// readFile >> planLine;
-			if (planLine2 != ""){
-						cout << line<< " "<< planLine2<< "$\n";
-						//printf("%d: %s \n", line, planLine2);
-						line ++;
+			if (planLine != ""){
+					type = planLine.substr(6,1);
+					// cout << line << " "<<  type << "$\n";
+					
+					if (type == "a"){
+						planInstruction = new AttitudeInstruction(planLine); 
+					} 
+					
+					if (type == "p") {
+						planInstruction = new PhotoInstruction(planLine); 
+					}
+
+					line ++;
 			}
 		}
-		
+
+	cout << "Lines read: "<< line<< endl;
 	readFile.close();
 	}
 	else{
@@ -37,9 +49,9 @@ cout << "Lecture du plan \n";
 return;
 }
 
-
 int main(int argc, char** argv) {
 	
 	lecturePlan();
 	return 0;
 }
+
