@@ -8,11 +8,11 @@ using namespace std;
 /*				Definion of the intructions in a plan			 			*/
 /*==========================================================================*/
 /*																			*/
-/* We've considered 2 types : photo shoot and attitude change				*/
+/* We've considered 2 types of action : photo shoot and attitude change				*/
 /* They are definied as follows:											*/
 /* 																			*/
-/*  	For a photo shoot :    string instruction = îHHMMSSpNomImage Inî	*/
-/*      For a attitude change: string instruction[ ]=îHHMMSSaAAABBBCCCIn	*/
+/*  	For a photo shoot :    string instruction = ‚ÄùHHMMSSpNomImage In‚Äù	*/
+/*      For a attitude change: string instruction[ ]=‚ÄùHHMMSSaAAABBBCCCIn"	*/
 /*==========================================================================*/
 
 
