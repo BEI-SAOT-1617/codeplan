@@ -8,11 +8,12 @@ using namespace std;
 /*				Definion of the intructions in a plan			 			*/
 /*==========================================================================*/
 /*																			*/
-/* We've considered 2 types of action : photo shoot and attitude change				*/
+/* We've considered 2 types : photo shoot and attitude change				*/
 /* They are definied as follows:											*/
 /* 																			*/
-/*  	For a photo shoot :    string instruction = ‚ÄùHHMMSSpNomImage In‚Äù	*/
-/*      For a attitude change: string instruction[ ]=‚ÄùHHMMSSaAAABBBCCCIn"	*/
+/*  	For a photo shoot :    string instruction = îHHMMSSpNomImage Inî	*/
+/*      For a attitude change: string instruction[ ]=îHHMMSSaAAABBBCCC In"	*/
+/*                                       AAA = roll BBB = pitch CCC = yaw   */
 /*==========================================================================*/
 
 
@@ -28,22 +29,41 @@ class GenericInstruction{
 		int index;
 	public:
 		GenericInstruction(string base);
-		void display();
+		virtual void printInstruction()=0;
 };
 
 
 class PhotoInstruction:public GenericInstruction{
 	protected:
-			
+		string photoName;
 	public:
 		PhotoInstruction(string base);
+		void printInstruction();
 };
 
 class AttitudeInstruction:public GenericInstruction{
 	protected:
-			
+		int pitch;
+		int yaw;
+		int roll;			
 	public:
 		AttitudeInstruction(string base);
+		void printInstruction();
+};
+
+
+const int maxInstructions = 100;
+
+class Plan{
+	protected:
+		//PhotoInstruction ActivityList; // or a dynamic vector?? [maxInstructions]
+		int nInstructions;
+		int id;
+		int version;
+	public:
+		Plan(int identifier, int ver);
+		// Plan(int identifier, int ver, GenericInstruction newInstruction);
+		void printPlan();
 };
 
 #endif

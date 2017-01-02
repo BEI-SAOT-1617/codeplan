@@ -33,7 +33,7 @@ void lecturePlan( ){
 					if (type == "p") {
 						planInstruction = new PhotoInstruction(planLine); 
 					}
-
+					planInstruction->printInstruction();
 					line ++;
 			}
 		}
@@ -46,12 +46,14 @@ void lecturePlan( ){
 	}
 	
 
-return;
+return;|
 }
 
 int main(int argc, char** argv) {
 	
 	lecturePlan();
+	//string test = "PAUSE";
+	//system(test.c_str());
 	return 0;
 }
 
