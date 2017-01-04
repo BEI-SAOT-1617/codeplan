@@ -5,6 +5,7 @@
 #include <stdlib.h> 
 #include <stdio.h>
 #include <string.h>
+#include <fstream>
 
 #include "genericInstruction.h"
 
@@ -14,14 +15,15 @@ const int maxInstructions = 100;
 
 class Plan{
 	protected:
-		GenericInstruction ActivityList[maxInstructions]; // or a dynamic vector?? 
+		GenericInstruction* ActivityList[maxInstructions]; 
 		int nInstructions;
 		int id;
 		int version;
 	public:
 		Plan(int identifier, int ver);
-		// Plan(int identifier, int ver, GenericInstruction newInstruction);
 		void printPlan();
+		void loadPlan(const char* filepath);
+		bool stockInstruction(GenericInstruction* newInstruction);
 };
 
 #endif
