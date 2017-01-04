@@ -1,10 +1,12 @@
 #ifndef GENERIC_INSTRUCTION
 #define GENERIC_INSTRUCTION
 
-#include <string>
 #include <iostream>
+#include <string.h>
 #include <stdlib.h> 
 #include <stdio.h>
+
+using namespace std;
 
 /*==============================================================================*/
 /*			Definition of the intructions in a plan			*/
@@ -32,7 +34,7 @@ class GenericInstruction{
 	public:	
 		GenericInstruction();
 		GenericInstruction(string base);
-		void printPInstruction();
+		virtual void printInstruction();
 };
 
 
@@ -53,7 +55,7 @@ class AttitudeInstruction:public GenericInstruction{
 	public:
 		AttitudeInstruction();
 		AttitudeInstruction(string base);
-		void printAInstruction();
+		void printInstruction();
 };
 
 #endif

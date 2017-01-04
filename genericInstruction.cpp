@@ -1,5 +1,6 @@
 #include "genericInstruction.h"
 
+using namespace std;
 
 GenericInstruction::GenericInstruction() {
 }
@@ -34,13 +35,14 @@ this->index = atoi( leftover.c_str()  );
 
 }
 
-void printInstruction() {
+void GenericInstruction::printInstruction() {
 	printf("Time: %02d:%02d:%02d ", this->hour, this->min, this->sec);
 	printf("Type: %c ", this->type );	
 }
 
-void PhotoInstruction::printPInstruction (){
-	this->printInstruction();
+void PhotoInstruction::printInstruction (){
+	printf("Time: %02d:%02d:%02d ", this->hour, this->min, this->sec);
+	printf("Type: %c ", this->type );
 	printf("Ph. Name: %s \t", this->photoName.c_str()); 
 	printf(" Index: %d \n", this->index);
 
@@ -63,8 +65,10 @@ AttitudeInstruction::AttitudeInstruction(string base):GenericInstruction(base){
 }
 
 
-void AttitudeInstruction::printAInstruction (){
-	this->printInstruction();
+void AttitudeInstruction::printInstruction (){
+
+	printf("Time: %02d:%02d:%02d ", this->hour, this->min, this->sec);
+	printf("Type: %c ", this->type );
 	printf("Attitude: %03d:%03d:%03d \t", this->roll, this->pitch, this->yaw );	
 	printf(" Index: %d \n", this->index);
 
