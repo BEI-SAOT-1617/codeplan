@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include "plan.h"
+#include "genericInstruction.h"
 
 using namespace std;
 
@@ -46,7 +47,7 @@ void lecturePlan( ){
 	}
 	
 
-return;|
+return;
 }
 
 int main(int argc, char** argv) {
