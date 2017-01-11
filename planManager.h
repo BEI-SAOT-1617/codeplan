@@ -18,6 +18,7 @@ public:
 	// Plan(int identifier, int ver, GenericInstruction newInstruction);
 	void executePlan();
 	void getStatus();
+	Plan generationPlan(string);
 };
 
 
