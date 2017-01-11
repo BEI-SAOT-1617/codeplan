@@ -6,20 +6,20 @@
 #include <stdlib.h> 
 #include <stdio.h>
 #include <string.h>
-#include <plan.h>
+#include "plan.h"
 
 using namespace std;
 
 class PlanManager {
 protected:
-	Plan Plans[12];
+	Plan Plans[4];
 	
 public:
 	PlanManager();
 	// Plan(int identifier, int ver, GenericInstruction newInstruction);
-	void executePlan();
+	void executePlan(Plan);
 	void getStatus();
-	Plan generationPlan(string);
+	Plan generatePlan(const char*);
 };
 
 
