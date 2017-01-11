@@ -12,6 +12,7 @@ using namespace std;
 
 class PlanManager {
 protected:
+	Plan Plans[12];
 	
 public:
 	PlanManager();
