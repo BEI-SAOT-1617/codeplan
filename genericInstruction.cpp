@@ -73,3 +73,43 @@ void AttitudeInstruction::printInstruction (){
 	printf(" Index: %d \n", this->index);
 
 }
+
+int GenericInstruction::gethour(){
+return this->hour;
+}
+
+int GenericInstruction::getmin(){
+return this->min;
+}
+
+int GenericInstruction::getsec(){
+return this->sec;
+}
+
+char GenericInstruction::gettype(){
+return this->type;
+}
+
+int GenericInstruction::getindex(){
+return this->index;
+}
+
+int AttitudeInstruction::getpitch(){
+return this->pitch;
+}
+
+int AttitudeInstruction::getyaw(){
+return this->yaw;
+}
+
+int AttitudeInstruction::getroll(){
+return this->roll;
+}
+
+void PhotoInstruction::getexposure(){
+return this->exposure;
+}
+
+string PhotoInstruction::getphotoName();
+return this->photoName;
+}

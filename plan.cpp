@@ -70,3 +70,17 @@ void Plan::loadPlan(const char* filepath){
 
 
 }
+
+int Plan::getnInstructions(){
+
+	return this->nInstructions;
+
+}
+
+GenericInstruction* getInstruction():{
+	
+	return ActivityList;
+
+}
+
+

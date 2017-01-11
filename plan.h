@@ -21,7 +21,9 @@ class Plan{
 		int version;
 	public:
 		Plan(int identifier, int ver);
+		int getnInstructions();
 		void printPlan();
+		GenericInstruction* getInstruction();
 		void loadPlan(const char* filepath);
 		bool stockInstruction(GenericInstruction* newInstruction);
 };

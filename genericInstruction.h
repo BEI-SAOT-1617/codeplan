@@ -35,16 +35,24 @@ class GenericInstruction{
 		GenericInstruction();
 		GenericInstruction(string base);
 		virtual void printInstruction();
+		int gethour();
+		int getmin();
+		int getsec();
+		char gettype();
+		int getindex();
 };
 
 
 class PhotoInstruction:public GenericInstruction{
 	protected:
 		string photoName;
+		int exposure;
 	public:
 		PhotoInstruction();
 		PhotoInstruction(string base);
 		void printInstruction();
+		string getphotoname();
+		int exposure();
 };
 
 class AttitudeInstruction:public GenericInstruction{
@@ -56,6 +64,9 @@ class AttitudeInstruction:public GenericInstruction{
 		AttitudeInstruction();
 		AttitudeInstruction(string base);
 		void printInstruction();
+		int getpitch();
+		int getyaw();
+		int getroll();
 };
 
 #endif
