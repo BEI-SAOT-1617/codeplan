@@ -13,8 +13,10 @@ using namespace std;
 
 
 PlanManager::PlanManager(){
-
+	nPlan=0;
 }
+
+
 
 void PlanManager::executePlan(Plan P){
 
