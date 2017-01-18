@@ -2,6 +2,11 @@
 
 using namespace std;
 
+
+Plan::Plan() {
+	
+}
+
 Plan::Plan(int identifier, int ver) {
 	this->id = identifier;
 	this->version = ver;
@@ -37,7 +42,7 @@ void Plan::loadPlan(const char* filepath){
 	readFile.open(filepath);
 	string type;
 	
-	cout << "Starting the reading of a plan \n";
+	cout << "Starting the reading of a the plan "<< filepath<< endl;
 	
 	GenericInstruction * planInstruction;
 	string planLine;
@@ -46,7 +51,8 @@ void Plan::loadPlan(const char* filepath){
 	if (readFile.is_open())	{
 		cout << "\t File " << filepath<< " opened \n";
 		while(  getline (readFile, planLine) ) {
-			if (planLine != ""){
+			if (planLine != "\n"){
+					
 					type = planLine.substr(6,1);
 					
 					if (type == "a"){
@@ -65,7 +71,7 @@ void Plan::loadPlan(const char* filepath){
 	readFile.close();
 	}
 	else{
-			
+		cout <<endl <<"File not found bitch!!!!"<< endl;	
 	}
 
 
@@ -77,9 +83,15 @@ int Plan::getnInstructions(){
 
 }
 
-GenericInstruction* getInstruction():{
-	
-	return ActivityList;
+GenericInstruction* Plan::getInstruction(int i){
+
+	if (i < this->nInstructions){
+		return ActivityList[i];
+	}
+	else{
+		/* Error in the number of the instruction. Number out of range */
+		return NULL;
+	}
 
 }
 

@@ -3,21 +3,45 @@
 // #include <stdio.h>
 #include <string>
 #include <fstream>
-#include "plan.h"
-#include "genericInstruction.h"
+
+#include "cameraController.h"	
+#include "attitudeController.h"
+#include "planManager.h"
+
+#include <time.h>
 
 using namespace std;
 
 
 int main(int argc, char** argv) {
 	
-	Plan myPlan(0,1);
-	myPlan.loadPlan("plan.txt");
+/*  Test for the controlers */
 	
-	myPlan.printPlan();
+	PlanManager myPlanManager;
 
-	//string test = "PAUSE";
-	//system(test.c_str());
+	CameraController myCameraController;
+	AttitudeController myAttiudeController;
+	/*
+	myCameraController.photoShoot("selfie", 100);
+	myAttiudeController.attitudeChange(0, 120, 200);*/
+
+
+	myPlanManager.generatePlan("plan1_1.txt");
+
+	myPlanManager.printPlan(0);
+
+	myPlanManager.executePlan(0);
+
+/* Test for the time recognizition
+
+	time_t t = time(0);
+	struct tm * now = localtime(&t);
+
+	cout << now->tm_hour<< endl;
+	cout << now->tm_min<< endl;
+	cout << now->tm_sec<< endl;
+*/
+	
 	return 0;
 }
 

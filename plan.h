@@ -20,10 +20,11 @@ class Plan{
 		int id;
 		int version;
 	public:
+		Plan();
 		Plan(int identifier, int ver);
 		int getnInstructions();
 		void printPlan();
-		GenericInstruction* getInstruction();
+		GenericInstruction* getInstruction(int i);
 		void loadPlan(const char* filepath);
 		bool stockInstruction(GenericInstruction* newInstruction);
 };

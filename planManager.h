@@ -16,9 +16,12 @@ protected:
 	int nPlan;
 public:
 	PlanManager();
-	void executePlan(Plan);
+	void executePlan(int indexPlan);
 	Plan generatePlan(const char*);
+	void printPlan(int indexPlan);
 };
 
 
 #endif
+
+

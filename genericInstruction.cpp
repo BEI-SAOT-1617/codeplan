@@ -8,6 +8,8 @@ GenericInstruction::GenericInstruction() {
 GenericInstruction::GenericInstruction(string base) {
 	string time = base.substr(0,6);
 	
+
+
 	this->hour =  atoi(time.c_str())/10000;
 	this->sec =  atoi(time.c_str())%100;
 	this->min =  (atoi(time.c_str())%10000)/100;
@@ -16,6 +18,7 @@ GenericInstruction::GenericInstruction(string base) {
 	char *aux = new char[1];
 	strcpy(aux , type.c_str()  );
 	this->type = *aux;
+
 
 }
 
@@ -74,42 +77,91 @@ void AttitudeInstruction::printInstruction (){
 
 }
 
-int GenericInstruction::gethour(){
+int GenericInstruction::getHour(){
 return this->hour;
 }
 
-int GenericInstruction::getmin(){
+int GenericInstruction::getMin(){
 return this->min;
 }
 
-int GenericInstruction::getsec(){
+int GenericInstruction::getSec(){
 return this->sec;
 }
 
-char GenericInstruction::gettype(){
+char GenericInstruction::getType(){
 return this->type;
 }
 
-int GenericInstruction::getindex(){
+int GenericInstruction::getIndex(){
 return this->index;
 }
 
-int AttitudeInstruction::getpitch(){
+int AttitudeInstruction::getPitch(){
 return this->pitch;
 }
 
-int AttitudeInstruction::getyaw(){
+int AttitudeInstruction::getYaw(){
 return this->yaw;
 }
 
-int AttitudeInstruction::getroll(){
+int AttitudeInstruction::getRoll(){
 return this->roll;
 }
 
-void PhotoInstruction::getexposure(){
+int PhotoInstruction::getExposure(){
 return this->exposure;
 }
 
-string PhotoInstruction::getphotoName();
+string PhotoInstruction::getPhotoName(){
 return this->photoName;
 }
+
+
+/* From this point the code is useless!!!!!!!*/
+
+int PhotoInstruction::getPitch(){
+
+}
+
+int PhotoInstruction::getYaw(){
+
+}
+
+int PhotoInstruction::getRoll(){
+
+}
+
+
+int AttitudeInstruction::getExposure(){
+
+}
+
+string AttitudeInstruction::getPhotoName(){
+
+}
+
+
+/* More bullshit !!!!!!!*/
+int GenericInstruction::getPitch(){
+
+}
+
+int GenericInstruction::getYaw(){
+
+}
+
+int GenericInstruction::getRoll(){
+
+}
+
+
+int GenericInstruction::getExposure(){
+
+}
+
+string GenericInstruction::getPhotoName(){
+
+}
+
+

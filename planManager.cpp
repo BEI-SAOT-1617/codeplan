@@ -1,52 +1,61 @@
 #include "planManager.h"
 #include "plan.h"
-#include <stdlib>
+
+#include <stdlib.h>
 #include <sstream>
 #include <cstdlib>
 #include <cstring>
 #include <string>
-#include <time>
+#include <time.h>
 #include <iostream>
+
 #include "genericInstruction.h"
+
 using namespace std;
 
 
-
 PlanManager::PlanManager(){
-	nPlan=0;
+	this->nPlan=0;
 }
+/* Merci Felix!! :) */
 
 
+void PlanManager::executePlan(int indexPlan){
 
-void PlanManager::executePlan(Plan P){
+	Plan P = this->Plans[indexPlan];
+	GenericInstruction* currentInst;
 
-	GenericInstruction* A = P.getInstruction();
-	bool wt = true;
-	for (i = 0,i++,P.getnInstructions){
-		
-		While(wt){
+	bool wt;
 
-			time_t now = time(0);	
+	for (int i = 0 ; i < P.getnInstructions(); i++){
 
-			if ( (now.hours==A(i).gethour) & (now.min==A(i).getmin) & (now.sec==A(i).getsec) ){
+		currentInst = P.getInstruction(i);
+		wt = true;
+
+		while(wt){
+
+			time_t t = time(0);
+			struct tm * now = localtime(&t);
+
+
+			if ( (now->tm_hour==currentInst->getHour()) & (now->tm_min==currentInst->getMin()) & (now->tm_sec==currentInst->getSec()) ){
 			
 				wt = false;
 											
-				if (A(i).gettype == 'p'){
-					int exposure=A(i).getexposure();
-					string photoName=A(i).getphotoName();
+				if (currentInst->getType() == 'p'){
+					
+					int exposure = currentInst->getExposure();
+					string photoName = currentInst->getPhotoName();
 						
-													
-				/// stub ?							
-						}
-				else if (A(i).gettype == 'a'){
+						cout<< "New photo! Smile!";						
+					}
+				else if (currentInst->getType() == 'a'){
 
-					int pitch=A(i).getpitch();
-					int yaw=A(i).getyaw();
-					int roll=A(i).getroll();
+					int pitch = currentInst->getPitch();
+					int yaw  = currentInst->getYaw();
+					int roll = currentInst->getRoll();
 						
-
-				///stub ?
+						cout<< "New attitude change!!";
 
 					}
 						
@@ -55,7 +64,8 @@ void PlanManager::executePlan(Plan P){
 		
 
 	    }
- 
+
+
 }
 
 Plan PlanManager::generatePlan(const char* filepath){
@@ -64,9 +74,30 @@ Plan PlanManager::generatePlan(const char* filepath){
 	unsigned int num_plan;
 
 	string s = filepath;
-	version = s[4];
-	num_plan = s[6];
+	version = s[4]-'0';
+	num_plan = s[6]-'0';
+
+	//cout << "version"<< version << endl;
+	//cout << "num_plan"<< num_plan<< endl;
+
+
 	Plan myPlan(version, num_plan);
 	myPlan.loadPlan(filepath);
-	myPlan.printPlan();
+	
+	
+	Plans[nPlan] = myPlan;
+
+	// Plans[nPlan].printPlan();
+
+	nPlan++;
+
 }
+
+void PlanManager::printPlan(int indexPlan){
+
+	this->Plans[indexPlan].printPlan();
+	return;
+
+}
+
+

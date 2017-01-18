@@ -35,11 +35,18 @@ class GenericInstruction{
 		GenericInstruction();
 		GenericInstruction(string base);
 		virtual void printInstruction();
-		int gethour();
-		int getmin();
-		int getsec();
-		char gettype();
-		int getindex();
+		int getHour();
+		int getMin();
+		int getSec();
+		char getType();
+		int getIndex();
+
+		virtual string getPhotoName()=0;
+		virtual int getExposure()=0;
+
+		virtual int getPitch()=0;
+		virtual	int getYaw()=0;
+		virtual int getRoll()=0;
 };
 
 
@@ -51,8 +58,13 @@ class PhotoInstruction:public GenericInstruction{
 		PhotoInstruction();
 		PhotoInstruction(string base);
 		void printInstruction();
-		string getphotoname();
-		int exposure();
+		string getPhotoName();
+		int getExposure();
+
+		/*  This is bullshit!!!!*/
+		int getPitch();
+		int getYaw();
+		int getRoll();
 };
 
 class AttitudeInstruction:public GenericInstruction{
@@ -64,9 +76,14 @@ class AttitudeInstruction:public GenericInstruction{
 		AttitudeInstruction();
 		AttitudeInstruction(string base);
 		void printInstruction();
-		int getpitch();
-		int getyaw();
-		int getroll();
+		int getPitch();
+		int getYaw();
+		int getRoll();
+
+		/*  This is bullshit!!!!*/
+		string getPhotoName();
+		int getExposure();
+
 };
 
 #endif
