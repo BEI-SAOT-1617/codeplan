@@ -20,7 +20,7 @@ PlanManager::PlanManager(){
 /* Merci Felix!! :) */
 
 
-void PlanManager::executePlan(int indexPlan){
+void PlanManager::executePlan(int indexPlan, AttitudeController* myAttitudeController, CameraController* myCameraController){
 
 	Plan P = this->Plans[indexPlan];
 	GenericInstruction* currentInst;
@@ -46,8 +46,11 @@ void PlanManager::executePlan(int indexPlan){
 					
 					int exposure = currentInst->getExposure();
 					string photoName = currentInst->getPhotoName();
-						
-						cout<< "New photo! Smile!";						
+
+					int exposure=500;
+					cout<<endl<< "New photo! Smile!"<< endl;	
+					myCameraController->photoShoot(photoName, exposure);
+											
 					}
 				else if (currentInst->getType() == 'a'){
 
@@ -55,8 +58,8 @@ void PlanManager::executePlan(int indexPlan){
 					int yaw  = currentInst->getYaw();
 					int roll = currentInst->getRoll();
 						
-						cout<< "New attitude change!!";
-
+					cout<<endl <<"New attitude change!!"<<endl;
+					myAttitudeController->attitudeChange(pitch, yaw, roll); // roll(not used)
 					}
 						
 				}

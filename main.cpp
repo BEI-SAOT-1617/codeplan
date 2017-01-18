@@ -20,17 +20,17 @@ int main(int argc, char** argv) {
 	PlanManager myPlanManager;
 
 	CameraController myCameraController;
-	AttitudeController myAttiudeController;
+	AttitudeController myAttitudeController;
 	/*
 	myCameraController.photoShoot("selfie", 100);
-	myAttiudeController.attitudeChange(0, 120, 200);*/
+	myAttitudeController.attitudeChange(0, 120, 200);*/
 
 
 	myPlanManager.generatePlan("plan1_1.txt");
 
 	myPlanManager.printPlan(0);
 
-	myPlanManager.executePlan(0);
+	myPlanManager.executePlan(0, &myAttitudeController, &myCameraController);
 
 /* Test for the time recognizition
 
