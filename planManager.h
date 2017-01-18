@@ -13,7 +13,7 @@ using namespace std;
 class PlanManager {
 protected:
 	Plan Plans[4];
-	int i;
+	int nPlan;
 public:
 	PlanManager();
 	void executePlan(Plan);
