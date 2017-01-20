@@ -4,6 +4,7 @@ using namespace std;
 
 #include <stdlib.h> 
 #include <stdio.h>
+#include <exception.h>
 
 
 CameraController::CameraController(){
@@ -19,9 +20,15 @@ sprintf(cmde, "raspistill -rot 90 -o %s.jpg -t %d", fileName.c_str(), exposure);
 
 cout << cmde <<endl;
 
-	/*
-	systeme(cmde);
-	*/
+try
+{
+systeme(cmde);
+}
+catch (exception& e)
+{
+	cout << "exception caught:" << e.what()<< endl;
+}
+	
 
 	return true; 
 }

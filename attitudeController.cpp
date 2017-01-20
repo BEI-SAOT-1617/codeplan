@@ -4,7 +4,7 @@ using namespace std;
 
 #include <stdlib.h> 
 #include <stdio.h>
-
+#include <exception.h>
 
 AttitudeController::AttitudeController(){
 
@@ -23,10 +23,15 @@ sprintf(cmde_yaw, "echo \"2=%d\" > /dev/servoblaster", yaw);
 cout << cmde_pitch<< endl;
 cout << cmde_yaw  << endl;
 
-/*
+try
+{
 system(cmde_pitch);
 system(cmde_yaw);
-*/
+}
+catch (exception& e)
+{
+	cout << "exception caught:" << e.what()<<endl;
+}
 
 return true; 
 }
