@@ -6,6 +6,7 @@ using namespace std;
 #include <stdio.h>
 
 Notification::Notification(){
+}
 	
 Notification(string d,int ind,string desc);	
 	this->date = d;

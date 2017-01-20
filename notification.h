@@ -17,6 +17,7 @@ class Notification{
 		int index_plan;
 		string description;
 	public:
+		Notification();
 		Notification(string date,int index_plan,string description);
 };
 
