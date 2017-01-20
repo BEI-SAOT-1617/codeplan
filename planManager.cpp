@@ -26,51 +26,51 @@ void PlanManager::executePlan(int indexPlan, AttitudeController* myAttitudeContr
 	Plan P = this->Plans[indexPlan];
 	GenericInstruction* currentInst;
 
-	bool instructionCatched;
-
+	bool instructionCatched, jumpInstruction;
 	//for (int i = 0 ; i < P.getnInstructions(); i++){
 
 		currentInst = P.getInstruction(ptInstruction);
 		instructionCatched = false;
+		jumpInstruction = false;
 
 		//while(wt){
 
-			time_t t = time(0);
-			struct tm * now = localtime(&t);
+		time_t t = time(0);
+		struct tm * now = localtime(&t);
 
-			int group = currentInst->getIndex();
+		int group = currentInst->getIndex();
+		for (int i = 0; i < 50; i++) {
+			if (group == bannedInstructions[i]) jumpInstruction = true;
+		}
+		if (jumpInstruction == false) {
+			if ((now->tm_hour == currentInst->getHour()) & (now->tm_min == currentInst->getMin()) & (now->tm_sec == currentInst->getSec())) {
 			
-			if ( (now->tm_hour==currentInst->getHour()) & (now->tm_min==currentInst->getMin()) & (now->tm_sec==currentInst->getSec()) ){
-			
-				instructionCatched = true;
-											
-				if (currentInst->getType() == 'p'){
-					
+				if (currentInst->getType() == 'p') {
+
 					int exposure = currentInst->getExposure();
 					string photoName = currentInst->getPhotoName();
-
-					exposure=500;
-					cout<<endl<< "New photo! Smile!"<< endl;	
+					
+					exposure = 500;
+					cout << endl << "New photo! Smile!" << endl;
 					myCameraController->photoShoot(photoName, exposure);
-											
-					}
-				else if (currentInst->getType() == 'a'){
+
+				}
+				else if (currentInst->getType() == 'a') {
 
 					int yaw = currentInst->getYaw();
 					int pitch = currentInst->getPitch();
 					int roll = currentInst->getRoll();
-						
-					cout<<endl <<"New attitude change!!"<<endl;
+
+					cout << endl << "New attitude change!!" << endl;
 					myAttitudeController->attitudeChange(yaw, pitch, roll); // roll(not used)
-					}
-						
 				}
-			//}
-			if (instructionCatched = true) {
+
 				ptInstruction++;
 				if (ptInstruction > P.getnInstructions()) ptInstruction = 0;
 				instructionCatched = false;
 			}
+		}
+		//}
 	//}
 
 
