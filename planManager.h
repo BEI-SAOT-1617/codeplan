@@ -18,11 +18,12 @@ protected:
 	Plan Plans[4];
 	int nPlan;
 	int ptInstruction;
+	int indexPlan;
 	int bannedInstructions[50];
 
 public:
 	PlanManager();
-	void executePlan(int , AttitudeController* , CameraController* );
+	void executePlan();
 	Plan generatePlan(const char*);
 	void printPlan(int indexPlan);
 };

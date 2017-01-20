@@ -21,8 +21,11 @@ PlanManager::PlanManager(){
 /* Merci Felix!! :) */
 
 
-void PlanManager::executePlan(int indexPlan, AttitudeController* myAttitudeController, CameraController* myCameraController){
+void PlanManager::executePlan(){
 
+
+if (nPlan > 0)
+{
 	Plan P = this->Plans[indexPlan];
 	GenericInstruction* currentInst;
 
@@ -66,45 +69,53 @@ void PlanManager::executePlan(int indexPlan, AttitudeController* myAttitudeContr
 				}
 
 				ptInstruction++;
-				if (ptInstruction > P.getnInstructions()) ptInstruction = 0;
+				if (ptInstruction > P.getnInstructions()){ 
+				ptInstruction = 0;
+				indexPlan++;
+				indexPlan=indexPlan%5;
+				nPlan--;
+				}
+				
+				
 				instructionCatched = false;
 			}
 		}
 		//}
 	//}
 
-
+}
 }
 
 Plan PlanManager::generatePlan(const char* filepath){
 	
 	unsigned int version;
 	unsigned int num_plan;
+	bool existnewPlan = true;
 
 	string s = filepath;
 	version = s[4]-'0';
 	num_plan = s[6]-'0';
+	
+	Plan myPlan(version, num_plan);
+	myPlan.loadPlan(filepath);
+				
+	//Plans[nPlan].printPlan();
 
 	//cout << "version"<< version << endl;
 	//cout << "num_plan"<< num_plan<< endl;
 
-
-	Plan myPlan(version, num_plan);
-	myPlan.loadPlan(filepath);
-	
-	
-	Plans[nPlan] = myPlan;
-
-	// Plans[nPlan].printPlan();
-
-	nPlan++;
-
-}
-
-void PlanManager::printPlan(int indexPlan){
-
-	this->Plans[indexPlan].printPlan();
-	return;
+	for (int i = 0 ; i < nPlan; i++){
+		if Plans[(i+indexPlan)%5]->id=num_plan{
+				if (Plans[(i+indexPlan)%5]->version < version){
+					Plans[(i+indexPlan)%5]= myPlan;
+				}
+		existnewPlan=false;
+		}
+	}
+	if existnewPlan{
+			Plans[(nPlan+indexPlan)%5]= myPlan
+			nPlan++;
+	}
 
 }
 
