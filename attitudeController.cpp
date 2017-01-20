@@ -24,8 +24,8 @@ cout << cmde_pitch<< endl;
 cout << cmde_yaw  << endl;
 
 /*
-systeme(cdme_pitch);
-systeme(cdme_yaw);
+system(cmde_pitch);
+system(cmde_yaw);
 */
 
 return true; 

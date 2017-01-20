@@ -15,7 +15,8 @@ using namespace std;
 
 
 PlanManager::PlanManager(){
-	this->nPlan=0;
+	this->nPlan = 0;
+	this->ptInstruction = 0;
 }
 /* Merci Felix!! :) */
 
@@ -25,48 +26,52 @@ void PlanManager::executePlan(int indexPlan, AttitudeController* myAttitudeContr
 	Plan P = this->Plans[indexPlan];
 	GenericInstruction* currentInst;
 
-	bool wt;
+	bool instructionCatched;
 
-	for (int i = 0 ; i < P.getnInstructions(); i++){
+	//for (int i = 0 ; i < P.getnInstructions(); i++){
 
-		currentInst = P.getInstruction(i);
-		wt = true;
+		currentInst = P.getInstruction(ptInstruction);
+		instructionCatched = false;
 
-		while(wt){
+		//while(wt){
 
 			time_t t = time(0);
 			struct tm * now = localtime(&t);
 
-
+			int group = currentInst->getIndex();
+			
 			if ( (now->tm_hour==currentInst->getHour()) & (now->tm_min==currentInst->getMin()) & (now->tm_sec==currentInst->getSec()) ){
 			
-				wt = false;
+				instructionCatched = true;
 											
 				if (currentInst->getType() == 'p'){
 					
 					int exposure = currentInst->getExposure();
 					string photoName = currentInst->getPhotoName();
 
-					int exposure=500;
+					exposure=500;
 					cout<<endl<< "New photo! Smile!"<< endl;	
 					myCameraController->photoShoot(photoName, exposure);
 											
 					}
 				else if (currentInst->getType() == 'a'){
 
+					int yaw = currentInst->getYaw();
 					int pitch = currentInst->getPitch();
-					int yaw  = currentInst->getYaw();
 					int roll = currentInst->getRoll();
 						
 					cout<<endl <<"New attitude change!!"<<endl;
-					myAttitudeController->attitudeChange(pitch, yaw, roll); // roll(not used)
+					myAttitudeController->attitudeChange(yaw, pitch, roll); // roll(not used)
 					}
 						
 				}
+			//}
+			if (instructionCatched = true) {
+				ptInstruction++;
+				if (ptInstruction > P.getnInstructions()) ptInstruction = 0;
+				instructionCatched = false;
 			}
-		
-
-	    }
+	//}
 
 
 }

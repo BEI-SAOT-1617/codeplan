@@ -17,6 +17,9 @@ class PlanManager {
 protected:
 	Plan Plans[4];
 	int nPlan;
+	int ptInstruction;
+	int bannedInstructions[50];
+
 public:
 	PlanManager();
 	void executePlan(int , AttitudeController* , CameraController* );
