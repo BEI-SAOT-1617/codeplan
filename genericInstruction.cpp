@@ -27,12 +27,15 @@ PhotoInstruction::PhotoInstruction():GenericInstruction(){
 }
 
 PhotoInstruction::PhotoInstruction(string base):GenericInstruction(base){
-/*  	For a photo shoot :    string instruction = "HHMMSSpNomImage In"	*/
+/*  	For a photo shoot :    string instruction = "HHMMSSpEXPOUNomImage In"	*/
 
-string cut = base.substr(7,base.length()-7);
+string exposure = base.substr(7,5);
+this->exposure = atoi(exposure.c_str());
+
+string cut = base.substr(12,base.length()-12);
 this->photoName = cut.substr(0, cut.find(" "));
 
-string leftover = base.substr(8+this->photoName.length(), 2);
+string leftover = base.substr(13+this->photoName.length(), 2);
 this->index = atoi( leftover.c_str()  );
 
 
@@ -47,7 +50,8 @@ void PhotoInstruction::printInstruction (){
 	printf("Time: %02d:%02d:%02d ", this->hour, this->min, this->sec);
 	printf("Type: %c ", this->type );
 	printf("Ph. Name: %s \t", this->photoName.c_str()); 
-	printf(" Index: %d \n", this->index);
+	printf("Expo.: %d \t", this->exposure); 
+	printf("Index: %d \n", this->index);
 
 }
 
@@ -72,8 +76,8 @@ void AttitudeInstruction::printInstruction (){
 
 	printf("Time: %02d:%02d:%02d ", this->hour, this->min, this->sec);
 	printf("Type: %c ", this->type );
-	printf("Attitude: %03d:%03d:%03d \t", this->roll, this->pitch, this->yaw );	
-	printf(" Index: %d \n", this->index);
+	printf("Attitude: %03d:%03d:%03d \t\t\t", this->roll, this->pitch, this->yaw );	
+	printf("Index: %d \n", this->index);
 
 }
 
