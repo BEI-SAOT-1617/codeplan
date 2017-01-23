@@ -55,10 +55,35 @@ void test_Integration() {
 
 }
 
+void test_StatusManager() {
+
+	StatusManager myStatusManager;
+	CameraController myCameraController;
+	AttitudeController myAttitudeController;
+	
+	string photoName = "selfie";
+
+	bool errorCamera = myCameraController.photoShoot(photoName, 100);
+	bool errorAttitude = myAttitudeController.attitudeChange(0, 120, 200);
+	
+
+	if (!errorCamera){
+		char cmde[1024];
+		sprintf(cmde, "It was not possible to take the photo %s.jpg", photoName.c_str());
+		myStatusManager.newNotification(1, cmde);	
+	}
+	
+	if (!errorAttitude){
+		char descrip[1024];
+		sprintf(descrip, "It was not possible to reach the wanted position");
+		myStatusManager.newNotification(2, descrip);	
+	}
+}
+ 	
+
 int main(int argc, char** argv) {
 	
-	StatusManager myStatusManager;
-	test_Integration() ;
+	test_StatusManager();
 	
 	return 0;
 }
