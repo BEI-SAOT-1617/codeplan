@@ -25,7 +25,6 @@ sprintf(cmde_yaw, "echo \"2=%d\" > /dev/servoblaster", yaw);
 
 if (system(cmde_pitch) != 0){
 	//cout << "Error in the pitch mouvement \n\n";
-
 	return false;
 }
 

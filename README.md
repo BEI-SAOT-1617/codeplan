@@ -2,4 +2,4 @@
 
 Pour lancer le truc 
 
-g++ main.cpp attitudeController.cpp cameraController.cpp planManager.cpp plan.cpp genericInstruction.cpp -o exec 
+g++ main_test.cpp attitudeController.cpp cameraController.cpp planManager.cpp plan.cpp genericInstruction.cpp statusManager.cpp -o exec 

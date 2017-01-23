@@ -5,6 +5,9 @@
 #include <iostream>
 #include <stdlib.h> 
 #include <stdio.h>
+#include <string.h>
+#include <fstream>
+#include <time.h> 
 
 #include "notification.h"
 
@@ -14,12 +17,13 @@ const int MAX_NOTIFICATION = 1000;
 
 class StatusManager{
 protected:
-	Notification ErrorList[MAX_NOTIFICATION];
-	int nNotifications;
+
+string pathLogFile;
+
 public:
 	StatusManager();
-	void newNotification(int errorID, string);
-
+	StatusManager(string);
+	void newNotification(int errorID, string desc);
 };
 
 

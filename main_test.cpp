@@ -37,21 +37,21 @@ void test_Controllers() {
 
 void test_Integration() {
 /* Integration of the classes PlanManager CameraController and AttitudeController*/
-
+/*
 	PlanManager myPlanManager;
 
 	CameraController myCameraController;
 	AttitudeController myAttitudeController;
 
-	/* Be carefull to have a file named plan1_1.txt under the same directory 
-		and with the correct instructions */
+	// Be carefull to have a file named plan1_1.txt under the same directory 
+	//	and with the correct instructions 
 
 	myPlanManager.generatePlan("plan1_1.txt");
 
 	myPlanManager.printPlan(0);
 
 	myPlanManager.executePlan(0, &myAttitudeController, &myCameraController);
-
+*/
 
 }
 
@@ -87,4 +87,3 @@ int main(int argc, char** argv) {
 	
 	return 0;
 }
-

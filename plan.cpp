@@ -95,4 +95,15 @@ GenericInstruction* Plan::getInstruction(int i){
 
 }
 
+int Plan::getID(){
+
+	return this->id;
+
+}
+
+int Plan::getVersion(){
+
+	return this->version;
+
+}
 

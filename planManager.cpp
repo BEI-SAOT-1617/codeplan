@@ -55,7 +55,7 @@ if (nPlan > 0)
 					
 					exposure = 500;
 					cout << endl << "New photo! Smile!" << endl;
-					myCameraController->photoShoot(photoName, exposure);
+					//myCameraController->photoShoot(photoName, exposure);
 
 				}
 				else if (currentInst->getType() == 'a') {
@@ -65,7 +65,7 @@ if (nPlan > 0)
 					int roll = currentInst->getRoll();
 
 					cout << endl << "New attitude change!!" << endl;
-					myAttitudeController->attitudeChange(yaw, pitch, roll); // roll(not used)
+					//myAttitudeController->attitudeChange(yaw, pitch, roll); // roll(not used)
 				}
 
 				ptInstruction++;
@@ -105,15 +105,15 @@ Plan PlanManager::generatePlan(const char* filepath){
 	//cout << "num_plan"<< num_plan<< endl;
 
 	for (int i = 0 ; i < nPlan; i++){
-		if Plans[(i+indexPlan)%5]->id=num_plan{
-				if (Plans[(i+indexPlan)%5]->version < version){
+		if (Plans[(i+indexPlan)%5].getID()==num_plan){
+				if (Plans[(i+indexPlan)%5].getVersion() < version){
 					Plans[(i+indexPlan)%5]= myPlan;
 				}
 		existnewPlan=false;
 		}
 	}
-	if existnewPlan{
-			Plans[(nPlan+indexPlan)%5]= myPlan
+	if (existnewPlan){
+			Plans[(nPlan+indexPlan)%5]= myPlan;
 			nPlan++;
 	}
 
