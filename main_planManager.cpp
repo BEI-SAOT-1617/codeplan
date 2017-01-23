@@ -19,6 +19,11 @@ char mode; // 'F' pour follower et 'L' pour leader
 // En pratique, le mode devra aussi être envoyé au ComGroundManager
 
 
+void changeMode() {
+	// passage en mde Leader : le mode doit être envoyé au ComGroundManager
+	mode='L';
+}
+
 void before() {
 // Vérification watchdog, recouvrement si besoin
 
@@ -34,7 +39,7 @@ void before() {
 
 		// Recovery
 		if(c==0) {
-			mode='L'; // changement de mode
+			changeMode(); // changement de mode
 		}
 	}
 
