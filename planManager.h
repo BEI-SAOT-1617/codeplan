@@ -19,7 +19,7 @@ protected:
 	int nPlan;
 	int ptInstruction;
 	int indexPlan;
-	int bannedInstructions[50];
+	bool bannedInstructions[100];
 
 public:
 	PlanManager();

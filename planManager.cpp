@@ -18,6 +18,7 @@ PlanManager::PlanManager(){
 	this->nPlan = 0;
 	this->ptInstruction = 0;
 	this->indexPlan = 0;
+	this->bannedInstructions[]={false};
 }
 /* Merci Felix!! :) */
 
@@ -43,9 +44,8 @@ if (nPlan > 0)
 		struct tm * now = localtime(&t);
 
 		int group = currentInst->getIndex();
-		for (int i = 0; i < 50; i++) {
-			if (group == bannedInstructions[i]) jumpInstruction = true;
-		}
+		if (group == true) jumpInstruction = true;
+		
 		if (jumpInstruction == false) {
 			if ((now->tm_hour == currentInst->getHour()) & (now->tm_min == currentInst->getMin()) & (now->tm_sec == currentInst->getSec())) {
 			
@@ -120,4 +120,6 @@ Plan PlanManager::generatePlan(const char* filepath){
 
 }
 
-	void pushBan(int index);
+	void PlanManager::pushBan(int index){
+		this->bannedInstructions[index]= true;
+	}
