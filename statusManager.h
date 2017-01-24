@@ -3,13 +3,11 @@
 
 
 #include <iostream>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
-#include <time.h> 
-
-#include "notification.h"
+#include <time.h>
 
 using namespace std;
 

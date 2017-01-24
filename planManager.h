@@ -3,7 +3,7 @@
 
 
 #include <iostream>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "plan.h"
@@ -15,11 +15,11 @@ using namespace std;
 
 class PlanManager {
 protected:
-	Plan Plans[4];
+	Plan Plans[2];
 	int nPlan;
 	int ptInstruction;
 	int indexPlan;
-	bool bannedInstructions[100];
+	bool bannedInstructions[100]={false};
 
 public:
 	PlanManager();
