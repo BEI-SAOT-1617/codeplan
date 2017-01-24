@@ -2,13 +2,17 @@
 #include <string>
 #include <fstream>
 #include <time.h>
+#include <unistd.h>
 
 #include "cameraController.h"	
 #include "attitudeController.h"
 #include "planManager.h"
 
 #include "statusManager.h"
-#include "watchdog.h"
+#include "Watchdog.h"
+
+// Pour lancer :
+// g++ main_planManager.cpp attitudeController.cpp cameraController.cpp planManager.cpp plan.cpp genericInstruction.cpp statusManager.cpp GPIO.cpp Watchdog.cpp -o exec 
 
 
 using namespace std;
@@ -20,7 +24,7 @@ char mode; // 'F' pour follower et 'L' pour leader
 
 
 void changeMode() {
-	// passage en mde Leader : le mode doit être envoyé au ComGroundManager
+	// passage en mode Leader : le mode doit être envoyé au ComGroundManager
 	mode='L';
 }
 
@@ -35,10 +39,10 @@ void before() {
 	if (mode=='F') { 
 		sleep(1);
 		int state;
-		state = watchdog.read(); // test watchdog
+		state = watchdog.readw(); // test watchdog
 
 		// Recovery
-		if(c==0) {
+		if(state==0) {
 			changeMode(); // changement de mode
 		}
 	}
@@ -48,7 +52,7 @@ void before() {
 
 void proceed() {
 // Fonctionnement normal
-	planManager.executePlan(); // à modifier
+	planManager.executePlan();
 
 
 }
