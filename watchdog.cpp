@@ -32,11 +32,6 @@ Watchdog::Watchdog() {
 }
 
 
-char Watchdog::getmode() {
-	return mode;
-}
-
-
 void Watchdog::set() {
 	// I'm alive!!!!
 	char cmde_setOut[] = {"                                "};
