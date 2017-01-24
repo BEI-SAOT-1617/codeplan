@@ -11,12 +11,13 @@
 #include "cameraController.h"
 #include "ARINC_Com.h"
 
+#define PLANS_BUFFER_SIZE	2
 
 using namespace std;
 
 class PlanManager {
 protected:
-	Plan Plans[2];
+	Plan Plans[PLANS_BUFFER_SIZE];
 	int nPlan;
 	int ptInstruction;
 	int indexPlan;

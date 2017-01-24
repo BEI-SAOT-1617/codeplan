@@ -28,13 +28,13 @@ struct PlanFilepath {
 int  main (int argc,char* argv[]) 
 {
 
-char name[] = "plan1_1";
+	char name[] = "plan1_1";
 
-if (argc!=2) 
-{
-	printf("T'as oublie l'argument pinpin ! Le hostname... \n");
-	exit (-1);
-}
+	if (argc!=2) 
+	{
+		printf("T'as oublie l'argument pinpin ! Le hostname... \n");
+		exit (-1);
+	}
 
 	StatusManager *sm;
 	Status *status;	
