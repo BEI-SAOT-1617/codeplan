@@ -9,6 +9,7 @@
 #include "plan.h"
 #include "attitudeController.h"
 #include "cameraController.h"
+#include "ARINC_Com.h"
 
 
 using namespace std;
@@ -23,13 +24,25 @@ protected:
 
 public:
 	PlanManager();
-	void executePlan();
-	Plan generatePlan(const char*);
+	void executePlan(QueuingPort* , int *);
+	void generatePlan(const char*);
 	void printPlan(int indexPlan);
 	void pushBan(int index);
 };
 
+typedef struct Attitude Attitude;
+struct Attitude {
+	int code;
+	int yaw;
+	int pitch;
+	int roll;
+};
+
+typedef struct Camera Camera;
+struct Camera {
+	int code;
+	char photoName[64];
+	int exposure;
+};
 
 #endif
-
-

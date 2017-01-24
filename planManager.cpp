@@ -8,6 +8,7 @@
 #include <string>
 #include <time.h>
 #include <iostream>
+#include <unistd.h>
 
 #include "genericInstruction.h"
 
@@ -23,7 +24,7 @@ PlanManager::PlanManager(){
 /* Merci Felix!! :) */
 
 
-void PlanManager::executePlan(){
+void PlanManager::executePlan(QueuingPort* ChannelEmission, int* responseController){
 
 
 if (nPlan > 0)
@@ -31,11 +32,10 @@ if (nPlan > 0)
 	Plan P = this->Plans[indexPlan];
 	GenericInstruction* currentInst;
 
-	bool instructionCatched, jumpInstruction;
+	bool jumpInstruction;
 	//for (int i = 0 ; i < P.getnInstructions(); i++){
 
 		currentInst = P.getInstruction(ptInstruction);
-		instructionCatched = false;
 		jumpInstruction = false;
 
 		//while(wt){
@@ -48,49 +48,81 @@ if (nPlan > 0)
 
 		if (jumpInstruction == false) {
 			if ((now->tm_hour == currentInst->getHour()) & (now->tm_min == currentInst->getMin()) & (now->tm_sec == currentInst->getSec())) {
-
+			/*
+			/ Codes des messages a envoyer :
+			/ 0 = Attitude
+			/ 1 = Photo
+			/ 2 = RetourController
+			/ 3 = PlanFilePath
+			/ 4 = Status
+			/ 5 = data
+			*/
 				if (currentInst->getType() == 'p') {
+					Camera C;
+					C.code = 1; 
+					C.exposure = currentInst->getExposure();
+					string aux = currentInst->getPhotoName(); 
+					strcpy(C.photoName,aux.c_str());
 
-					int exposure = currentInst->getExposure();
-					string photoName = currentInst->getPhotoName();
-
-					exposure = 500;
 					cout << endl << "New photo! Smile!" << endl;
+					ChannelEmission->SendQueuingMsg((char*)&C, sizeof(Camera));
 					//myCameraController->photoShoot(photoName, exposure);
 
 				}
 				else if (currentInst->getType() == 'a') {
 
-					int yaw = currentInst->getYaw();
-					int pitch = currentInst->getPitch();
-					int roll = currentInst->getRoll();
+					Attitude A;
+					A.code = 0;
+					A.yaw = currentInst->getYaw();
+					A.pitch = currentInst->getPitch();
+					A.roll = currentInst->getRoll();
 
 					cout << endl << "New attitude change!!" << endl;
+					ChannelEmission->SendQueuingMsg((char*)&A, sizeof(Attitude));
+
 					//myAttitudeController->attitudeChange(yaw, pitch, roll); // roll(not used)
 				}
+				int time_out = 1000000; // 1 secondes
+				while (time_out > 0 && *responseController == 0){
+					usleep(1);
+					time_out--;
 
-				ptInstruction++;
-				if (ptInstruction > P.getnInstructions()){
-				ptInstruction = 0;
-				indexPlan++;
-				indexPlan=indexPlan%2;
-				nPlan--;
 				}
 
+				if (*responseController != 1) {
+					bannedInstructions[ptInstruction] = true;
+					if (*responseController == -1){
+						// The attitude was not reached 
+						// We'll have to send it thru the channel
+					}
+					if (time_out == 0){
+						// Time out in the response of the attitude controller
+						// We'll have to send it thru the channel
+					}
+				}
 
-				instructionCatched = false;
+				*responseController = 0;
+				ptInstruction++;
+
+				if (ptInstruction >= P.getnInstructions()){
+					ptInstruction = 0;
+					indexPlan++;
+					indexPlan=indexPlan%2;
+					nPlan--;
+				}
+
 			}
-		}
+		} else ptInstruction++;
 		//}
 	//}
 
 }
 }
 
-Plan PlanManager::generatePlan(const char* filepath){
+void PlanManager::generatePlan(const char* filepath){
 
-	unsigned int version;
-	unsigned int num_plan;
+	int version;
+	int num_plan;
 	bool existnewPlan = true;
 
 	string s = filepath;

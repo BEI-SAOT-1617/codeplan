@@ -8,7 +8,7 @@ StatusManager::StatusManager(){
 }
 
 StatusManager::StatusManager(string filepath){
-	this->pathLogFile= filepath;
+	this->pathLogFile = filepath;
 }
 
 

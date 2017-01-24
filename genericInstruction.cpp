@@ -125,47 +125,47 @@ return this->photoName;
 /* From this point the code is useless!!!!!!!*/
 
 int PhotoInstruction::getPitch(){
-
+return -1;
 }
 
 int PhotoInstruction::getYaw(){
-
+return -1;
 }
 
 int PhotoInstruction::getRoll(){
-
+return -1;
 }
 
 
 int AttitudeInstruction::getExposure(){
-
+return -1;
 }
 
 string AttitudeInstruction::getPhotoName(){
-
+return "-1";
 }
 
 
 /* More bullshit !!!!!!!*/
 int GenericInstruction::getPitch(){
-
+return -1;
 }
 
 int GenericInstruction::getYaw(){
-
+return -1;
 }
 
 int GenericInstruction::getRoll(){
-
+return -1;
 }
 
 
 int GenericInstruction::getExposure(){
-
+return -1;
 }
 
 string GenericInstruction::getPhotoName(){
-
+return "-1";
 }
 
 
