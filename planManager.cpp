@@ -17,6 +17,7 @@ using namespace std;
 PlanManager::PlanManager(){
 	this->nPlan = 0;
 	this->ptInstruction = 0;
+	this->indexPlan = 0;
 }
 /* Merci Felix!! :) */
 
@@ -119,4 +120,4 @@ Plan PlanManager::generatePlan(const char* filepath){
 
 }
 
-
+	void pushBan(int index);

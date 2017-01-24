@@ -26,6 +26,7 @@ public:
 	void executePlan();
 	Plan generatePlan(const char*);
 	void printPlan(int indexPlan);
+	void pushBan(int index);
 };
 
 
