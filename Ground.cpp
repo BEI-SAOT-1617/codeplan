@@ -44,7 +44,7 @@ while (1) {
 	if (c == 'p'){	// Envoi d'un plan
 		cout << "What is the plan name ? (end it by '.txt'" << endl;
 		p.code = 5;
-		scanf(" %c", &p.name)
+		scanf("%11s[^\n]", p.name);
 		cout << "Sending Plan..." << endl;
 		string aux(p.name);
 		sprintf(cmde, "sh uploadGtoS.sh %s", aux);
