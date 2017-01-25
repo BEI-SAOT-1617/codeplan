@@ -12,26 +12,6 @@ using namespace std;
 #include "ARINC_Com.h"
 #include "statusManager.h"
 
-typedef struct Status Status;
-struct Status {
-	int code;
-	int errorID;
-	char description[128];
-};
-
-
-typedef struct PlanFilepath PlanFilepath;
-struct PlanFilepath {
-	int code;
-	char filepath[64];
-};
-
-typedef struct PlanName PlanName;
-struct PlanName {
-	int code;
-	char name[11];
-};
-
 int  main (int argc,char* argv[]) 
 {
 
@@ -41,10 +21,10 @@ if (argc!=2)
 	exit (-1);
 }
 
-	StatusManager *sm;
+	StatusManager sm;
 	Status *status;	
 	PlanName *p;
-	PlanFilepath pfp;
+	PlanFilePath pfp;
 	char s[100];
 
 	if (gethostname(s, 100) != 0) {
@@ -73,20 +53,14 @@ if (argc!=2)
 
 		if(status->code == 4) {
 			string str(status->description);
-			sm->newNotification(status->errorID, str);
+			sm.newNotification(status->errorID, str);
 		}
 		if(status->code == 5) {
 			p = (PlanName*)buffer;
 			for(int i=0; i<11; i++)
 				pfp.filepath[i] = p->name[i];
 			cout<<p->name;
-			channelOutPM.SendQueuingMsg((char*)&pfp, sizeof(PlanFilepath));
+			channelOutPM.SendQueuingMsg((char*)&pfp, sizeof(PlanFilePath));
 		}
 	}
 }
-
-
-
-
-
-

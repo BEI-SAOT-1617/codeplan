@@ -57,7 +57,8 @@ if (gethostname(s, 100) != 0) {
 QueuingPort channelOut(0, 18003, argv[1]); 	//Client
 
 channelOut.Display();
-	
+
+
 channelOut.SendQueuingMsg((char*)&p, sizeof(Plan));
 
 }

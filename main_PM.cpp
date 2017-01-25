@@ -10,11 +10,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
+#include "planManager.h"
 
 using namespace std;
 
-#include "planManager.h"
+
 int tid_FD, tid_FP;
 pthread_t *thread1, *thread2;
 PlanManager PM;
@@ -40,20 +40,19 @@ struct Camera {
 	char photoName[32];
 	int exposure;
 };
-*/
-
-typedef struct statusControl statusControl;
-struct statusControl {
-	int code;
-	bool returnControl;
-};
 
 typedef struct Status Status;
 struct Status {
 	int code;
 	int errorID;
-	char description[64];
-	char filePath[64];
+	char description[128];
+	
+};
+
+typedef struct statusControl statusControl;
+struct statusControl {
+	int code;
+	bool returnControl;
 };
 
 typedef struct PlanFilePath PlanFilePath;
@@ -62,25 +61,19 @@ struct PlanFilePath {
 	const char filePath[64];
 };
 
-typedef struct ReturnControl ReturnControl;
-struct ReturnControl {
-	int code;
-	bool result;
-	int indexInhibit;
-};
+*/
+
+
 
 void * Server_PM(void *args){
 	//PlanManager* PM = (PlanManager*) args;
 	cout << "Bonjour du Thread Processeur " << tid_FD << endl;
 
-	//QueuingPort* ChannelReceptionSM
-	//ChannelReceptionSM = (args*)QueuingPort
-
 	int x=0;
 
 	char s[100];
 	PlanFilePath* f;
-	ReturnControl* r;
+	statusControl* r;
 
 	if (gethostname(s, 100) != 0) {
 	    perror("S-> gethostname");
@@ -89,7 +82,6 @@ void * Server_PM(void *args){
 
 	cout << "Host name " << s << endl;
 
-	// KEZAKO ???
 	channelReceptionPM->Display();
 
 	char buffer[1024];
@@ -101,13 +93,12 @@ void * Server_PM(void *args){
 		f = (PlanFilePath*)buffer;
 
 		if(f->code == 3) {
-			cout<<"Msg("<<x++<<"):  path ="<<f->filePath<<endl;
-			PM.generatePlan(f->filePath);
+			cout<<"Msg("<<x++<<"):  path ="<<f->filepath<<endl;
+			PM.generatePlan(f->filepath);
 		} else if (f->code == 2) {
-			r = (ReturnControl*)buffer;
-			cout<<"Msg("<<x++<<"):  code retour ="<<r->result<<"):  code retour ="<<r->indexInhibit<<endl;
-			if (r->result == false) {
-				// PM->pushBan(r->indexInhibit);
+			r = (statusControl*)buffer;
+			cout<<"Msg("<<x++<<"):  code retour ="<<r->returnControl<<")"<<endl;
+			if (r->returnControl == false) {
 				responseController = -1;
 			}
 			else{
@@ -115,16 +106,19 @@ void * Server_PM(void *args){
 			}
 		}
 	
-
- 	cout << "Terminaison du Thread " << tid_FD << endl;
 	}
+
+cout << "Terminaison du Thread " << tid_FD << endl;
 return NULL;
 }
 
 void * Client_PM(void *args){
 	// Partie Surete de fonctionnement
 	while(1){
-	PM.executePlan(channelController, &responseController,channelSM );
+		sleep(1);
+		//cout<<"I am awakening..."<<endl;
+		PM.executePlan(channelController, &responseController,channelSM );
+		//cout<<"Je viens de lancer la fction execute plan"<<endl;
 	}
 return NULL;
 }

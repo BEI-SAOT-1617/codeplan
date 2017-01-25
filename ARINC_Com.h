@@ -1,3 +1,5 @@
+#ifndef ARINC_COM
+#define ARINC_COM
 
 #define MAXLGMSG 1024
 #define LNGHOST 128
@@ -54,3 +56,52 @@ public:
 	int ReadSamplingMsg(char*);
 };
 
+typedef struct Attitude Attitude;
+struct Attitude {
+	int code;
+	int yaw;
+	int pitch;
+	int roll;
+};
+
+typedef struct Camera Camera;
+struct Camera {
+	int code;
+	char photoName[64];
+	int exposure;
+};
+
+typedef struct Status Status;
+struct Status {
+	int code;
+	int errorID;
+	char description[128];
+	
+};
+
+typedef struct PlanFilePath PlanFilePath;
+struct PlanFilePath {
+	int code;
+	char filepath[64];
+};
+
+typedef struct PlanName PlanName;
+struct PlanName {
+	int code;
+	char name[11];
+};
+
+typedef struct statusControl statusControl;
+struct statusControl {
+	int code;
+	bool returnControl;
+};
+/*
+typedef struct ReturnControl ReturnControl;
+struct ReturnControl {
+	int code;
+	bool result;
+	int indexInhibit;
+};*/
+
+#endif

@@ -1,4 +1,3 @@
-
 #ifndef STATUSMANAGER
 #define STATUSMANAGER
 #include <iostream>

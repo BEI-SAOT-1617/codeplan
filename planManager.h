@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "plan.h"
 #include "attitudeController.h"
 #include "cameraController.h"
@@ -30,20 +31,4 @@ public:
 	void printPlan(int indexPlan);
 	void pushBan(int index);
 };
-
-typedef struct Attitude Attitude;
-struct Attitude {
-	int code;
-	int yaw;
-	int pitch;
-	int roll;
-};
-
-typedef struct Camera Camera;
-struct Camera {
-	int code;
-	char photoName[64];
-	int exposure;
-};
-
 #endif

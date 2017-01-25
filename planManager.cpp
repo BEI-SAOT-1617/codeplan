@@ -1,6 +1,3 @@
-#include "planManager.h"
-#include "plan.h"
-
 #include <stdlib.h>
 #include <sstream>
 #include <cstdlib>
@@ -11,7 +8,8 @@
 #include <unistd.h>
 
 #include "genericInstruction.h"
-
+#include "planManager.h"
+#include "plan.h"
 using namespace std;
 
 
@@ -45,7 +43,7 @@ if (nPlan > 0) {
 	int group = currentInst->getIndex();
 	if ((this->bannedInstructions[group]) == true) jumpInstruction = true;
 
-	if (jumpInstruction == false) {
+	if ((jumpInstruction == false) && (nPlan > 0) ) {
 		if ((now->tm_hour == currentInst->getHour()) & (now->tm_min == currentInst->getMin()) & (now->tm_sec == currentInst->getSec())) {
 		/*
 		/ Codes des messages a envoyer :
@@ -56,6 +54,7 @@ if (nPlan > 0) {
 		/ 4 = Status
 		/ 5 = data
 		*/
+			cout<<"C'est l'heure ";
 			bool start_timeout = false;
 			if (currentInst->getType() == 'p') {
 				Camera C;
@@ -83,23 +82,32 @@ if (nPlan > 0) {
 				//myAttitudeController->attitudeChange(yaw, pitch, roll); // roll(not used)
 				
 				start_timeout = true;
+			}else {
+				Status S;
+				S.code = 4;
+				S.errorID = 0; // A changer.		
+				sprintf(S.description, "Wrong intruction #%d, could not identify the instruction type.",ptInstruction);
+
+				ChannelErreur->SendQueuingMsg((char*)&S, sizeof(Status));
+				// Envoi d'une erreur status : ligne d'instruction inconnue.
 			}
+
 			int time_out = 1000000; 
 			if (start_timeout == true) {
 				while (time_out > 0 && *responseController == 0){
 					usleep(1);
 					time_out--;
 				}
-			}else {
-				// Envoi d'une erreur status : ligne d'instruction inconnue.
 			}
 
 			if (*responseController != 1) {
-				bannedInstructions[ptInstruction] = true;
+				bannedInstructions[group] = true;
 				if (*responseController == -1){
+					cout<<"Instruction "<<group<<" banned : error from controller"<<endl;
 					// The attitude was not reached 
 				}
 				if (time_out == 0){
+					cout<<"Instruction "<<group<<" banned : timeout."<<endl;
 					// Time out in the response of the attitude controller
 				}
 			}
@@ -114,10 +122,26 @@ if (nPlan > 0) {
 			}
 
 		} else if (	// Cas où le temps de l'instruction est déjà passé... on l'aura jamais !
-			(now->tm_hour == currentInst->getHour()) & 	( (now->tm_min < currentInst->getMin()) ||
-																((now->tm_min == currentInst->getMin()) & (now->tm_sec < currentInst->getSec())   )
-														)) { ptInstruction++; }
-	} else ptInstruction++;
+			(now->tm_hour == currentInst->getHour()) && 	( (now->tm_min > currentInst->getMin()) ||
+									((now->tm_min == currentInst->getMin()) && (now->tm_sec > currentInst->getSec())   )
+														)) { 
+		cout<<"L'heure est deja passé "<<ptInstruction<<endl;
+		ptInstruction++;
+			if (ptInstruction >= P.getnInstructions()){ // Fin d'un plan d'instruction, on passe au suivant.
+				ptInstruction = 0;
+				indexPlan = (indexPlan + 1)%2;
+				nPlan--;
+			} 
+		}
+	} else if (jumpInstruction) {
+		ptInstruction++;
+		if (ptInstruction >= P.getnInstructions()){ // Fin d'un plan d'instruction, on passe au suivant.
+				ptInstruction = 0;
+				indexPlan = (indexPlan + 1)%2;
+				nPlan--;
+		}
+		cout<<"Instruction jumped"<<endl;
+	}
 
 	//}
 
@@ -143,22 +167,23 @@ void PlanManager::generatePlan(const char* filepath){
 	cout << "num_plan "<< num_plan<< endl;
 
 	for (int i = 0 ; i < nPlan; i++){
-		//cout << "nplan " << Plans[(i+indexPlan)%2].getID()<< endl;
+		cout << "nplan " << Plans[(i+indexPlan)%2].getID()<< endl;
 		int k = (i+indexPlan)%PLANS_BUFFER_SIZE;
 		if (  (Plans[k].getID()==num_plan) & (k != indexPlan)  ){
-				//cout << "hola " << Plans[k].getVersion()<<endl;
+				cout << "hola " << Plans[k].getVersion()<<endl;
 				if (Plans[k].getVersion() < version){
 					Plans[k] = myPlan;
-					//cout << " New version of an existing plan "<< endl;
+					cout << " New version of an existing plan "<< endl;
 				}
 				existnewPlan = false;
 		}
 	}
-
+	cout<<endl<<"Le plan n'existe pas ? "<<existnewPlan<<endl;
 	if (existnewPlan){
 			Plans[(nPlan+indexPlan)%PLANS_BUFFER_SIZE] = myPlan;
 			nPlan++;
 	}
+	cout<<"Plan ajouté"<<endl;
 
 }
 

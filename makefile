@@ -8,19 +8,21 @@ MAKE = make
 
 # exemples sur les sockets :  quels sockets???
 all:
+	$(MAKE) ARINC_Com
 	$(MAKE) genericInstruction
 	$(MAKE) plan
 	$(MAKE) planManager
 	$(MAKE) statusManager
 	$(MAKE) attitudeController
 	$(MAKE) cameraController
-#	$(MAKE) comGroundManager
-	$(MAKE) ARINC_Com
 	$(MAKE) main_PM 
 	$(MAKE) main_run
+	$(MAKE) comGroundManager
+	$(MAKE) Ground
+	$(MAKE) Control_run
 	$(MAKE) clean
-# SOCKET INET 
 
+# Commandes a executer
 main_run: *.o
 	$(CC) *.o -o main_run
 
@@ -45,11 +47,18 @@ attitudeController:  attitudeController.cpp attitudeController.h
 cameraController:  cameraController.cpp cameraController.h
 	$(CC) -c cameraController.cpp cameraController.h
 
-#comGroundManager:  
-#	$(CC) -c comGroundManager.cpp comGroundManager.h
+comGroundManager: ARINC_Com.o statusManager.o comGroundManager.o
+	$(CC) ARINC_Com.o statusManager.o comGroundManager.o -o main_Com_ST
 
 ARINC_Com:  ARINC_Com.cpp ARINC_Com.h
 	$(CC) -c ARINC_Com.cpp ARINC_Com.h
+
+Ground: ARINC_Com.o Ground.o
+	$(CC) ARINC_Com.o Ground.o -o main_Ground
+
+Control_run : ARINC_Com.o attitudeController.o cameraController.o control.o
+	$(CC) ARINC_Com.o attitudeController.o cameraController.o control.o -o main_Control
+
 
 
 # CLEAN .o
