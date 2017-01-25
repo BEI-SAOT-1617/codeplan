@@ -25,7 +25,7 @@ protected:
 
 public:
 	PlanManager();
-	void executePlan(QueuingPort* , int *);
+	void executePlan(QueuingPort* , int *,QueuingPort*);
 	void generatePlan(const char*);
 	void printPlan(int indexPlan);
 	void pushBan(int index);

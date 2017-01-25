@@ -18,7 +18,7 @@ all:
 	$(MAKE) ARINC_Com
 	$(MAKE) main_PM 
 	$(MAKE) main_run
-
+	$(MAKE) clean
 # SOCKET INET 
 
 main_run: *.o

@@ -19,6 +19,10 @@ int tid_FD, tid_FP;
 pthread_t *thread1, *thread2;
 PlanManager PM;
 int responseController = 0;
+QueuingPort* channelController; 	// Client_PM vers controller
+QueuingPort* channelSM; 		// Client_PM vers com ground / SM
+QueuingPort* channelReceptionPM; 		// Server_PM	
+
 
 /*
 typedef struct Attitude Attitude;
@@ -69,6 +73,9 @@ void * Server_PM(void *args){
 	//PlanManager* PM = (PlanManager*) args;
 	cout << "Bonjour du Thread Processeur " << tid_FD << endl;
 
+	//QueuingPort* ChannelReceptionSM
+	//ChannelReceptionSM = (args*)QueuingPort
+
 	int x=0;
 
 	char s[100];
@@ -83,20 +90,20 @@ void * Server_PM(void *args){
 	cout << "Host name " << s << endl;
 
 	// KEZAKO ???
-	channelReceptionPM.Display();
+	channelReceptionPM->Display();
 
 	char buffer[1024];
 	int i; for(i=0; i>1024; i++) buffer[i] = '\0';
 
 	while(1) {
 
-		channelReceptionPM.RecvQueuingMsg(buffer);
+		channelReceptionPM->RecvQueuingMsg(buffer);
 		f = (PlanFilePath*)buffer;
 
-		if(f->code == 2) {
+		if(f->code == 3) {
 			cout<<"Msg("<<x++<<"):  path ="<<f->filePath<<endl;
 			PM.generatePlan(f->filePath);
-		} else if (f->code == 3) {
+		} else if (f->code == 2) {
 			r = (ReturnControl*)buffer;
 			cout<<"Msg("<<x++<<"):  code retour ="<<r->result<<"):  code retour ="<<r->indexInhibit<<endl;
 			if (r->result == false) {
@@ -111,11 +118,15 @@ void * Server_PM(void *args){
 
  	cout << "Terminaison du Thread " << tid_FD << endl;
 	}
+return NULL;
 }
 
 void * Client_PM(void *args){
 	// Partie Surete de fonctionnement
-	PM.executePlan(&channelSM, &responseController );
+	while(1){
+	PM.executePlan(channelController, &responseController,channelSM );
+	}
+return NULL;
 }
 
 
@@ -136,9 +147,9 @@ int  main (int argc,char* argv[]) {
 
 	cout << "Host name " << s << endl; 
 	
-	QueuingPort channelController(0, 18002, argv[1]); 	// Client_PM vers controller
-	QueuingPort channelSM(0, 18003, argv[1]); 		// Client_PM vers com ground / SM
-	QueuingPort channelReceptionPM(1, 18001, s); 		// Server_PM	
+	channelController = new QueuingPort(0, 18002, argv[1]); 	// Client_PM vers controller
+	channelSM = new QueuingPort(0, 18003, argv[1]); 		// Client_PM vers com ground / SM
+	channelReceptionPM = new QueuingPort(1, 18001, s); 		// Server_PM	
 
 	// generate thread
 	pthread_attr_t *thread_attributes;

@@ -24,7 +24,7 @@ PlanManager::PlanManager(){
 /* Merci Felix!! :) */
 
 
-void PlanManager::executePlan(QueuingPort* ChannelEmission, int* responseController){
+void PlanManager::executePlan(QueuingPort* ChannelEmission, int* responseController,QueuingPort* ChannelErreur){
 
 
 if (nPlan > 0) {
@@ -84,9 +84,8 @@ if (nPlan > 0) {
 				
 				start_timeout = true;
 			}
-			
-			if (time_out == true) {
-				int time_out = 1000000; // 1 secondes
+			int time_out = 1000000; 
+			if (start_timeout == true) {
 				while (time_out > 0 && *responseController == 0){
 					usleep(1);
 					time_out--;
@@ -146,7 +145,7 @@ void PlanManager::generatePlan(const char* filepath){
 	for (int i = 0 ; i < nPlan; i++){
 		//cout << "nplan " << Plans[(i+indexPlan)%2].getID()<< endl;
 		int k = (i+indexPlan)%PLANS_BUFFER_SIZE;
-		if (Plans[k].getID()==num_plan & (k != indexPlan){
+		if (  (Plans[k].getID()==num_plan) & (k != indexPlan)  ){
 				//cout << "hola " << Plans[k].getVersion()<<endl;
 				if (Plans[k].getVersion() < version){
 					Plans[k] = myPlan;
