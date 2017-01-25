@@ -24,7 +24,7 @@ if (argc!=2)
 	StatusManager sm;
 	Status *status;	
 	PlanName *p;
-	Mode *m;
+	ModeStruct *m;
 	PlanFilePath pfp;
 	PlanFilePath *imageName;
 	string imageList[128];
