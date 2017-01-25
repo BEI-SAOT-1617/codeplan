@@ -77,7 +77,9 @@ if (argc!=2)
 			m = (ModeStruct*)buffer;
 			mode = m->rpiMode;
 		}
-		else if(status->code == 10){
+		else if((status->code == 10) && (mode == true)){
+			sprintf(cmde, "sh uploadStoG.sh LogError.txt");
+			system(cmde);
 			while(ptImageSent != ptImageReceived){
 				sprintf(cmde, "sh uploadStoG.sh %s", imageList[ptImageSent]);
 				system(cmde);
