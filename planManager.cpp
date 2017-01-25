@@ -17,7 +17,6 @@ PlanManager::PlanManager(){
 	this->nPlan = 0;
 	this->ptInstruction = 0;
 	this->indexPlan = 0;
-	//this->bannedInstructions[]={false};
 }
 
 
@@ -112,7 +111,7 @@ if (nPlan > 0) {
 
 						if (currentInst->getType() == 'a'){
 							// The attitude was not reached 
-							S_controller.errorID = 0; // Look the error list
+							S_controller.errorID = 0; 	// Look the error list
 							sprintf(S_controller.description, "Attitude not reached. Plan %d.%d : Line #%d : Index #%d ",P.getID(),P.getVersion(), ptInstruction+1,  group);
 						}	
 						if (currentInst->getType() == 'p'){
@@ -132,23 +131,33 @@ if (nPlan > 0) {
 					// Time out in the response of the attitude controller
 				}
 			}
-
-			*responseController = 0;
+			/*-------------------------------------------------------------------*/
+			
+			/*-----------------   Photo sending to the ComGrdMnger  -------------*/
+			if ( *responseController == 1  && currentInst->getType() == 'p') {	
+					PlanFilePath PhotoPath;
+					PhotoPath.code = 3;
+					string aux =  currentInst->getPhotoName();
+					strcpy (PhotoPath.filepath , aux.c_str()) ; 	
+					printf("Sending the photo %s \n", PhotoPath.filepath);
+					ChannelErreur->SendQueuingMsg((char*)&PhotoPath, sizeof(PlanFilePath));
+			
+			}
 			/*-------------------------------------------------------------------*/
 
+			*responseController = 0;
 			ptInstruction++;
 
 		
 
 		} else if (	// Cas où le temps de l'instruction est déjà passé... on l'aura jamais !
-			( now->tm_hour > currentInst->getHour() )   ||  ( (now->tm_hour == currentInst->getHour())  && 	( now->tm_min > currentInst->getMin() )) ||
+			 ( (now->tm_hour == currentInst->getHour())  && 	( now->tm_min > currentInst->getMin() )) ||
 									( (now->tm_min  == currentInst->getMin() )  &&  ( now->tm_sec > currentInst->getSec() ))
 														) { 
 					cout<<"L'heure est deja passé "<<ptInstruction<<endl;
 					Status S_heure;
 					S_heure.code = 4;
-					S_heure.errorID = 3; // A changer.		
-					sprintf(S_heure.description, "Time has passed, Plan %d.%d : Line #%d : Index : #%d ",P.getID(),P.getVersion(), ptInstruction+1,  group);
+					S_heure.errorID = 3;
 					ChannelErreur->SendQueuingMsg((char*)&S_heure, sizeof(Status));
 
 					ptInstruction++;
@@ -162,17 +171,18 @@ if (nPlan > 0) {
 	//}
 	if (ptInstruction >= P.getnInstructions()){ // Fin d'un plan d'instruction, on passe au suivant.
 				ptInstruction = 0;
-				indexPlan = (indexPlan + 1)%2;
+				indexPlan = (indexPlan + 1)%PLANS_BUFFER_SIZE;
 				nPlan--;
+				for (int k=0; k< 100; k++) this->bannedInstructions[k] = false;
 		}
-	} // end grand if
+	} // end big if
 }
 
 void PlanManager::generatePlan(const char* filepath){
 
 	int version;
 	int num_plan;
-	bool existnewPlan = true;
+	bool existnewPlan = false;
 
 	string s = filepath;
 	version = s[6]-'0';
@@ -187,7 +197,7 @@ void PlanManager::generatePlan(const char* filepath){
 	cout << "num_plan "<< num_plan<< endl;
 
 	for (int i = 0 ; i < nPlan; i++){
-		cout << "nplan " << Plans[(i+indexPlan)%2].getID()<< endl;
+		cout << "nplan " << Plans[(i+indexPlan)%PLANS_BUFFER_SIZE].getID()<< endl;
 		int k = (i+indexPlan)%PLANS_BUFFER_SIZE;
 		if (  (Plans[k].getID()==num_plan) & (k != indexPlan)  ){
 				cout << "hola " << Plans[k].getVersion()<<endl;
@@ -195,12 +205,12 @@ void PlanManager::generatePlan(const char* filepath){
 					Plans[k] = myPlan;
 					cout << " New version of an existing plan "<< endl;
 				}
-				existnewPlan = false;
+				existnewPlan = true;
 		}
 	}
 
-	cout<<endl<<"Le plan n'existe pas ? "<<existnewPlan<<endl;
-	if (existnewPlan){
+	cout<<endl<<"Le plan existe ? "<<existnewPlan<<endl;
+	if (!existnewPlan){
 			Plans[(nPlan+indexPlan)%PLANS_BUFFER_SIZE] = myPlan;
 			nPlan++;
 	}
