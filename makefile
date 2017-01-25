@@ -15,6 +15,8 @@ all:
 	$(MAKE) statusManager
 	$(MAKE) attitudeController
 	$(MAKE) cameraController
+	$(MAKE) gpio
+	$(MAKE) watchdog
 	$(MAKE) main_PM 
 	$(MAKE) main_run
 	$(MAKE) comGroundManager
@@ -58,6 +60,12 @@ Ground: ARINC_Com.o Ground.o
 
 Control_run : ARINC_Com.o attitudeController.o cameraController.o control.o
 	$(CC) ARINC_Com.o attitudeController.o cameraController.o control.o -o main_Control
+	
+watchdog : watchdog.cpp watchdog.h
+	$(CC) -c watchdog.cpp watchdog.h
+	
+gpio : GPIO.cpp GPIO.h
+	$(CC) -c GPIO.cpp GPIO.h
 
 
 
