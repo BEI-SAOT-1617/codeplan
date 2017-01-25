@@ -21,7 +21,7 @@ if (argc!=2)
 
 
 char s[100];
-string cmde;
+char cmde[] = {"                                "};
 PlanName p;
 
 if (gethostname(s, 100) != 0) {
@@ -46,8 +46,8 @@ while (1) {
 		p.code = 5;
 		scanf("%11s[^\n]", p.name);
 		cout << "Sending Plan..." << endl;
-		string aux(p.name);
-		sprintf(cmde, "sh uploadGtoS.sh %s", aux);
+		//string aux(p.name);
+		sprintf(cmde, "sh uploadGtoS.sh %s", p.name);
 		system(cmde);
 		sleep(2);
 		channelOut.SendQueuingMsg((char*)&p, sizeof(PlanName));

@@ -50,7 +50,7 @@ if (argc!=2)
 
 	char buffer[1024];
 	int i; for(i=0; i>1024; i++) buffer[i] = '\0';
-	string cmde;
+	char cmde[] = {"                                "};
 	
 	while(1) {
 
@@ -81,10 +81,10 @@ if (argc!=2)
 			sprintf(cmde, "sh uploadStoG.sh LogError.txt");
 			system(cmde);
 			while(ptImageSent != ptImageReceived){
-				sprintf(cmde, "sh uploadStoG.sh %s", imageList[ptImageSent]);
+				sprintf(cmde, "sh uploadStoG.sh %s", imageList[ptImageSent].c_str());
 				system(cmde);
 				sleep(1);
-				sprintf(cmde, "rm %s", imageList[ptImageSent]);
+				sprintf(cmde, "rm %s", imageList[ptImageSent].c_str());
 				system(cmde);
 				ptImageSent = (ptImageSent + 1)%128;
 			}// lancer bash qui envoie chaque photo du tableau.

@@ -27,7 +27,7 @@ all:
 
 # Commandes a executer
 main_run: *.o
-	$(CC) *.o -o main_PM
+	$(CC) *.o -o main_run
 
 main_PM: main_PM.cpp
 	$(CC) -c main_PM.cpp

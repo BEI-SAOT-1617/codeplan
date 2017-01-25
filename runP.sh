@@ -1,6 +1,6 @@
 >listpid
 xterm -e ./main_Control  &
-xterm -e ./main_PM  &
+xterm -e ./main_run  &
 xterm -e ./main_Com_ST  &
 echo '***** WAITING FOR INSTALL TO COMPLETE  *****'
 for i in `seq 20`
