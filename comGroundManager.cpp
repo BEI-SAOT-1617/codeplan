@@ -50,7 +50,7 @@ if (argc!=2)
 
 	char buffer[1024];
 	int i; for(i=0; i>1024; i++) buffer[i] = '\0';
-
+	string cmde;
 	
 	while(1) {
 
@@ -78,9 +78,13 @@ if (argc!=2)
 			mode = m->rpiMode;
 		}
 		else if(status->code == 10){
-			while(ptImageSent < ptImageReceived){
-				imageList[ptImageSent];
-				ptImageSent++;
+			while(ptImageSent != ptImageReceived){
+				sprintf(cmde, "sh uploadStoG.sh %s", imageList[ptImageSent]);
+				system(cmde);
+				sleep(1);
+				sprintf(cmde, "rm %s", imageList[ptImageSent]);
+				system(cmde);
+				ptImageSent = (ptImageSent + 1)%128;
 			}// lancer bash qui envoie chaque photo du tableau.
 		}
 	}
