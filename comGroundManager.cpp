@@ -28,8 +28,8 @@ if (argc!=2)
 	PlanFilePath pfp;
 	PlanFilePath *imageName;
 	string imageList[128];
-	ptImageReceived = 0;
-	ptImageSent = 0;
+	int ptImageReceived = 0;
+	int ptImageSent = 0;
 	bool mode = false; // Mode slave;
 	char s[100];
 
