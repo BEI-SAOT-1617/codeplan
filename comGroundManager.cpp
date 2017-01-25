@@ -10,31 +10,30 @@
 using namespace std;
 
 #include "ARINC_Com.h"
-#include "StatusManager.h"
+#include "statusManager.h"
 
 typedef struct Status Status;
 struct Status {
 	int code;
 	int errorID;
+	char description[128];
 };
 
 
 typedef struct PlanFilepath PlanFilepath;
 struct PlanFilepath {
 	int code;
-	char filepath[60];
+	char filepath[64];
 };
 
-typedef struct Plan Plan;
-struct Plan {
+typedef struct PlanName PlanName;
+struct PlanName {
 	int code;
 	char name[11];
 };
 
 int  main (int argc,char* argv[]) 
 {
-
-char name[] = "plan1_1";
 
 if (argc!=2) 
 {
@@ -44,7 +43,7 @@ if (argc!=2)
 
 	StatusManager *sm;
 	Status *status;	
-	Plan *p
+	PlanName *p;
 	PlanFilepath pfp;
 	char s[100];
 
@@ -66,23 +65,22 @@ if (argc!=2)
 	char buffer[1024];
 	int i; for(i=0; i>1024; i++) buffer[i] = '\0';
 
-	for(int i =0; i<7; i++)
-		pfp.filepath[i] = name[i];
-	channelOutPM.SendQueuingMsg((char*)&pfp, sizeof(PlanFilepath));
-
+	
 	while(1) {
 
 		channelIn.RecvQueuingMsg(buffer);
 		status = (Status*)buffer;
 
 		if(status->code == 4) {
-			sm->newNotification(status->errorID);
+			string str(status->description);
+			sm->newNotification(status->errorID, str);
 		}
-		if(status->code == 4) {
-			p = (Status*)buffer;
+		if(status->code == 5) {
+			p = (PlanName*)buffer;
 			for(int i=0; i<11; i++)
-				pfp.filepath[i] = p->name[i]
+				pfp.filepath[i] = p->name[i];
 			cout<<p->name;
+			channelOutPM.SendQueuingMsg((char*)&pfp, sizeof(PlanFilepath));
 		}
 	}
 }

@@ -1,4 +1,4 @@
-#include "StatusManager.h"
+#include "statusManager.h"
 
 using namespace std;
 
@@ -11,26 +11,15 @@ StatusManager::StatusManager(string filepath){
 	this->pathLogFile= filepath;
 }
 
-void StatusManager::newNotification(int errorID){
+void StatusManager::newNotification(int errorID, string description){
 	ofstream writeFile;
 	writeFile.open(this->pathLogFile.c_str(), ofstream::app);
-	string type;
-	string description;
 	
 	time_t rawtime;
 
 	struct tm * timeinfo;
 	time (&rawtime);
-	timeinfo = localtime (&rawtime);
-	
-	switch(errorID) {
-		case 0: description = "ErrorID = 0"; break;
-		case 1: description = "ErrorID = 1"; break;
-		case 2: description = "ErrorID = 2"; break;
-		case 3: description = "ErrorID = 3"; break;
-		default: description = "ErrorID = default"; break;
-
-	}	
+	timeinfo = localtime (&rawtime);	
 	
 	cout << "Adding notification in file log : "<< this->pathLogFile << endl;
 
