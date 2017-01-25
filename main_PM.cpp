@@ -120,19 +120,25 @@ DEBUT PARTIE SURETE DE FONCTIONNEMENT
 	*/
 
 Watchdog watchdog;
-char mode; // 'F' pour follower et 'L' pour leader
+bool mode; // 'false' pour follower et 'true' pour leader
 // En pratique, le mode devra aussi être envoyé au ComGroundManager
 
 
 void changeMode() {
 	// passage en mode Leader : le mode doit être envoyé au ComGroundManager
-	mode='L';
+	mode=true;
+	
+	ModeStruct m;
+	m.code = 6;
+	m.rpiMode = true;
+	cout << endl << "Changement de mode : Leader" << endl;
+	channelSM->SendQueuingMsg((char*)&m, sizeof(ModeStruct));
 }
 
 void before() {
 // Vérification watchdog, recouvrement si besoin
 
-	if (mode=='L') {
+	if (mode==true) {
 	watchdog.set(); 		// I'm alive!!!!!
 
 	cout << "Leader : I'm alive" << endl;
@@ -140,7 +146,7 @@ void before() {
 	}
 
 
-	if (mode=='F') { 
+	if (mode==false) { 
 		sleep(1);
 		int state;
 	cout << "Follower : Test watchdog" << endl;
@@ -179,8 +185,13 @@ void after() {
 
 void * Client_PM(void *args){
 	// Partie Surete de fonctionnement
-	mode = 'F'; // par défaut, follower
-
+	mode = false; // par défaut, follower
+	ModeStruct m;
+	m.code = 6;
+	m.rpiMode = false;
+	cout << endl << "Initialisation mode Follower" << endl;
+	channelSM->SendQueuingMsg((char*)&m, sizeof(ModeStruct));
+		
 	signal(SIGINT, (sig_t)bye);
 
 	while(1) {
