@@ -79,8 +79,8 @@ if (argc!=2)
 		}
 		else if(status->code == 10){
 			while(ptImageSent < ptImageReceived){
-				imageList[ptImageSend];
-				ptImageSend++;
+				imageList[ptImageSent];
+				ptImageSent++;
 			}// lancer bash qui envoie chaque photo du tableau.
 		}
 	}
