@@ -28,7 +28,8 @@ if (argc!=2)
 	PlanFilePath pfp;
 	PlanFilePath *imageName;
 	string imageList[128];
-	ptImages = 0;
+	ptImageReceived = 0;
+	ptImageSent = 0;
 	bool mode = false; // Mode slave;
 	char s[100];
 
@@ -58,8 +59,8 @@ if (argc!=2)
 		if (status->code == 3){		// utilisation d'un type p
 			imageName = (PlanFilePath*)buffer;
 			string aux(imageName->filepath);
-			imageList[ptImages] = aux;
-			ptImages = (ptImages + 1)%128;
+			imageList[ptImageReceived] = aux;
+			ptImageReceived = (ptImageReceived + 1)%128;
 		}
 		else if(status->code == 4) {
 			string str(status->description);
@@ -77,7 +78,10 @@ if (argc!=2)
 			mode = m->rpiMode;
 		}
 		else if(status->code == 10){
-			// lancer bash qui envoie chaque photo du tableau.
+			while(ptImageSent < ptImageReceived){
+				imageList[ptImageSend];
+				ptImageSend++;
+			}// lancer bash qui envoie chaque photo du tableau.
 		}
 	}
 }
