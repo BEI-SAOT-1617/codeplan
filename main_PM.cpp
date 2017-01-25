@@ -11,6 +11,9 @@
 #include <stdio.h>
 
 #include "planManager.h"
+#include "watchdog.h"
+#include "GPIO.h"
+#define LOW 0
 
 using namespace std;
 
@@ -112,16 +115,86 @@ cout << "Terminaison du Thread " << tid_FD << endl;
 return NULL;
 }
 
+/* 
+DEBUT PARTIE SURETE DE FONCTIONNEMENT 
+	*/
+
+Watchdog watchdog;
+char mode; // 'F' pour follower et 'L' pour leader
+// En pratique, le mode devra aussi être envoyé au ComGroundManager
+
+
+void changeMode() {
+	// passage en mode Leader : le mode doit être envoyé au ComGroundManager
+	mode='L';
+}
+
+void before() {
+// Vérification watchdog, recouvrement si besoin
+
+	if (mode=='L') {
+	watchdog.set(); 		// I'm alive!!!!!
+
+	cout << "Leader : I'm alive" << endl;
+
+	}
+
+
+	if (mode=='F') { 
+		sleep(1);
+		int state;
+	cout << "Follower : Test watchdog" << endl;
+		state = watchdog.readw(); // test watchdog
+	cout << "State " << state << endl;
+
+		// Recovery
+		if(state==0) {
+	cout << "Follower : changement de mode" << endl;
+			changeMode(); // changement de mode
+		}
+	}
+
+}
+
+
+void proceed() {
+// Fonctionnement normal
+	sleep(1);
+	cout << "Fonctionnement" << endl;
+	PM.executePlan(channelController, &responseController,channelSM );
+
+
+}
+
+sig_t bye() {
+	cout << "Mort........" << endl;
+	GPIOWrite(3,LOW);
+	exit(0);
+}
+
+void after() {
+	// .... do nothing
+}
+
+
 void * Client_PM(void *args){
 	// Partie Surete de fonctionnement
-	while(1){
-		sleep(1);
-		//cout<<"I am awakening..."<<endl;
-		PM.executePlan(channelController, &responseController,channelSM );
-		//cout<<"Je viens de lancer la fction execute plan"<<endl;
+	mode = 'F'; // par défaut, follower
+
+	signal(SIGINT, (sig_t)bye);
+
+	while(1) {
+		before();
+		proceed();
+		after();
 	}
+
 return NULL;
 }
+
+/* 
+FIN PARTIE SURETE DE FONCTIONNEMENT 
+	*/
 
 
 int  main (int argc,char* argv[]) {
