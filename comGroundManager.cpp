@@ -25,19 +25,26 @@ struct PlanFilepath {
 	char filepath[60];
 };
 
+typedef struct Plan Plan;
+struct Plan {
+	int code;
+	char name[11];
+};
+
 int  main (int argc,char* argv[]) 
 {
 
-	char name[] = "plan1_1";
+char name[] = "plan1_1";
 
-	if (argc!=2) 
-	{
-		printf("T'as oublie l'argument pinpin ! Le hostname... \n");
-		exit (-1);
-	}
+if (argc!=2) 
+{
+	printf("T'as oublie l'argument pinpin ! Le hostname... \n");
+	exit (-1);
+}
 
 	StatusManager *sm;
 	Status *status;	
+	Plan *p
 	PlanFilepath pfp;
 	char s[100];
 
@@ -71,6 +78,17 @@ int  main (int argc,char* argv[])
 		if(status->code == 4) {
 			sm->newNotification(status->errorID);
 		}
+		if(status->code == 4) {
+			p = (Status*)buffer;
+			for(int i=0; i<11; i++)
+				pfp.filepath[i] = p->name[i]
+			cout<<p->name;
+		}
 	}
 }
+
+
+
+
+
 
