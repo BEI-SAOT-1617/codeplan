@@ -91,6 +91,12 @@ struct PlanName {
 	char name[11];
 };
 
+typedef struct ModeStruct ModeStruct;
+struct ModeStruct {
+	int code;
+	bool rpiMode;
+};
+
 typedef struct statusControl statusControl;
 struct statusControl {
 	int code;

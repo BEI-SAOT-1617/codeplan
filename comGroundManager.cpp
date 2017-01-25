@@ -24,7 +24,12 @@ if (argc!=2)
 	StatusManager sm;
 	Status *status;	
 	PlanName *p;
+	Mode *m;
 	PlanFilePath pfp;
+	PlanFilePath *imageName;
+	string imageList[128];
+	ptImages = 0;
+	bool mode = false; // Mode slave;
 	char s[100];
 
 	if (gethostname(s, 100) != 0) {
@@ -50,17 +55,29 @@ if (argc!=2)
 
 		channelIn.RecvQueuingMsg(buffer);
 		status = (Status*)buffer;
-
-		if(status->code == 4) {
+		if (status->code == 3){		// utilisation d'un type p
+			imageName = (PlanFilePath*)buffer;
+			string aux(imageName->filepath);
+			imageList[ptImages] = aux;
+			ptImages = (ptImages + 1)%128;
+		}
+		else if(status->code == 4) {
 			string str(status->description);
 			sm.newNotification(status->errorID, str);
 		}
-		if(status->code == 5) {
+		else if(status->code == 5) {
 			p = (PlanName*)buffer;
 			for(int i=0; i<11; i++)
 				pfp.filepath[i] = p->name[i];
 			cout<<p->name;
 			channelOutPM.SendQueuingMsg((char*)&pfp, sizeof(PlanFilePath));
+		}
+		else if(status->code == 6){
+			m = (ModeStruct*)buffer;
+			mode = m->rpiMode;
+		}
+		else if(status->code == 10){
+			// lancer bash qui envoie chaque photo du tableau.
 		}
 	}
 }
