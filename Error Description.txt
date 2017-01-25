@@ -1,0 +1,6 @@
+Errors
+
+0: An attitude was not reached
+1: A photo was not taken
+2: A plan has a character in 'type' who's not 'a' or 'p'
+3: Time has passed for this instruction
