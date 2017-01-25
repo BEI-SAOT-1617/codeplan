@@ -22,11 +22,12 @@ all:
 	$(MAKE) comGroundManager
 	$(MAKE) Ground
 	$(MAKE) Control_run
+	$(MAKE) kernel
 	$(MAKE) clean
 
 # Commandes a executer
 main_run: *.o
-	$(CC) *.o -o main_run
+	$(CC) *.o -o main_PM
 
 main_PM: main_PM.cpp
 	$(CC) -c main_PM.cpp
@@ -67,7 +68,8 @@ watchdog : watchdog.cpp watchdog.h
 gpio : GPIO.cpp GPIO.h
 	$(CC) -c GPIO.cpp GPIO.h
 
-
+kernel: kernel_arinc.cpp
+	gcc kernel_arinc.cpp
 
 # CLEAN .o
 clean:
