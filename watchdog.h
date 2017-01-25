@@ -18,7 +18,7 @@ private:
 public:
 	Watchdog();
 	void set();
-	int read();
-
+	int readw();
+};
 
 #endif
