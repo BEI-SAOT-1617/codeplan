@@ -120,14 +120,13 @@ DEBUT PARTIE SURETE DE FONCTIONNEMENT
 	*/
 
 Watchdog watchdog;
-bool mode; // 'false' pour follower et 'true' pour leader
-// En pratique, le mode devra aussi être envoyé au ComGroundManager
-
+bool mode; // false = follower ; true = leader
 
 void changeMode() {
-	// passage en mode Leader : le mode doit être envoyé au ComGroundManager
+	// Switch mode to 'Leader' : the mode has to be sent to ComGroundManager
 	mode=true;
 	
+	//ModeStruct (code, rpiMode) used in channels
 	ModeStruct m;
 	m.code = 6;
 	m.rpiMode = true;
@@ -136,8 +135,9 @@ void changeMode() {
 }
 
 void before() {
-// Vérification watchdog, recouvrement si besoin
+// vérification watchdog, recouvrement si besoin
 
+	// Leader
 	if (mode==true) {
 	watchdog.set(); 		// I'm alive!!!!!
 
@@ -145,7 +145,7 @@ void before() {
 
 	}
 
-
+	// Follower
 	if (mode==false) { 
 		sleep(1);
 		int state;
@@ -164,12 +164,10 @@ void before() {
 
 
 void proceed() {
-// Fonctionnement normal
+// Fonctionnement normal : execution du plan
 	sleep(1);
 	cout << "Fonctionnement" << endl;
-	PM.executePlan(channelController, &responseController,channelSM );
-
-
+	PM.executePlan(channelController, &responseController,channelSM);
 }
 
 sig_t bye() {
@@ -184,7 +182,7 @@ void after() {
 
 
 void * Client_PM(void *args){
-	// Partie Surete de fonctionnement
+	// Partie Surete de fonctionnement : thread exécutant le Before Proceed After
 	mode = false; // par défaut, follower
 	ModeStruct m;
 	m.code = 6;
