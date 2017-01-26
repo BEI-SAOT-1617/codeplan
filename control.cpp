@@ -21,7 +21,7 @@ if (argc!=2)
 	exit (-1);
 }
 
-
+	cout << "The controller partition " << ::getpid() << " is ready !" << endl;
 	CameraController myCameraController;
 	AttitudeController myAttitudeController;
 
@@ -40,7 +40,7 @@ if (argc!=2)
 	    exit(1);
 	}
 
-	cout << "Host name " << s << endl; 
+	//cout << "Host name " << s << endl; 
 	
 	QueuingPort channelOut(0, 18001, argv[1]); 	// Client
 	QueuingPort channelIn(1, 18002, s); 		// Server	

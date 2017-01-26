@@ -41,18 +41,23 @@ Tperiod[2]=TIME_CT;
 // Main body of the program
 
 // Reading partition ids (pids)
-	pid[0] = atoi(argv[1]) ; // FIRST process-partition PM
-	pid[1] = atoi(argv[2]) ; // SECOND process-partition SM
-	pid[2] = atoi(argv[1]) ; // FIRST process-partition PM
-	pid[3] = atoi(argv[1]) ; // FIRST process-partition PM
-	pid[4] = atoi(argv[2]) ; // SECOND process-partition SM
-	pid[5] = atoi(argv[1]) ; // FIRST process-partition PM
-	pid[6] = atoi(argv[3]) ; // THIRD process-partition CT
+	pid[0] = 1; // FIRST process-partition PM
+	pid[1] = 2; // SECOND process-partition SM
+	pid[2] = 1; // FIRST process-partition PM
+	pid[3] = 1; // FIRST process-partition PM
+	pid[4] = 2; // SECOND process-partition SM
+	pid[5] = 1; // FIRST process-partition PM
+	pid[6] = 3; // THIRD process-partition CT
+
+	pidList[0] = atoi(argv[1]);
+        pidList[1] = atoi(argv[2]);
+        pidList[2] = atoi(argv[3]);
+
 
 printf("********* LIST OF PARTITION IDS************\n");
 
 for (i=0; i<N; i++)
-	printf("pids - P%d:	%d\n",i,pid[i]);
+	printf("pids - P%d:	%d\n",i,pidList[i]);
 
 printf("********* LIST OF PARTITION TIME BUDGET ************\n");
 
@@ -62,8 +67,8 @@ for (i=0; i<N; i++)
 printf("********* STOPPING ALL PARTITION IDS************\n");
 
 for (i=0; i<N; i++){
-    printf("STOP - P%d:     %d\n",i,pid[i]);
-	kill (pid[i],  SIGSTOP);
+    printf("STOP - P%d:     %d\n",i,pidList[i]);
+	kill (pidList[i],  SIGSTOP);
 }
 
 printf("********* WAITING BEF0RE SCHEDULING LOOP  ************\n");
@@ -78,20 +83,20 @@ active_p=0; // active process active_p set to 0 (1st process in major frame)
 while (1) {  // Scheduler infinite loop
 
 	// next process to schedule
-	printf("Active P(%d) – PID: %d – ", active_p, pid[active_p]);
-	kill (pid[active_p], SIGCONT);
+	printf("Active P(%d) – PID: %d – ", active_p, pidList[pid[active_p]]);
+	kill (pidList[pid[active_p]], SIGCONT);
 
 	// scheduler waiting for active_p time budget
-	printf("Tperiod: %d ms\n", Tperiod[active_p]);
-	usleep (Tperiod[active_p]*1000); // parameter in usec
+	printf("Tperiod: %d ms\n", Tperiod[pidList[pid[active_p]]);
+	usleep (Tperiod[pidList[pid[active_p]]*1000); // parameter in usec
 
 	// stop active_p after time budget elapsed
-	kill (pid[active_p], SIGSTOP);
+	kill (pidList[pid[active_p]], SIGSTOP);
 
 	// set active_p to next (modulo N, number of partitions)
-	
+
 	active_p=(active_p + 1) % TFRAME;
-	
+
 } // end of while - end of main loop
 
 }; // end of program

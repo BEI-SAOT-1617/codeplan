@@ -70,7 +70,6 @@ struct PlanFilePath {
 
 void * Server_PM(void *args){
 	//PlanManager* PM = (PlanManager*) args;
-	cout << "Bonjour du Thread Processeur " << tid_FD << endl;
 
 	int x=0;
 
@@ -166,7 +165,7 @@ void before() {
 void proceed() {
 // Fonctionnement normal
 	sleep(1);
-	cout << "Fonctionnement" << endl;
+	cout << "Processing..." << endl;
 	PM.executePlan(channelController, &responseController,channelSM );
 
 
@@ -185,14 +184,13 @@ void after() {
 
 void * Client_PM(void *args){
 	// Partie Surete de fonctionnement
+
 	mode = false; // par défaut, follower
 	ModeStruct m;
 	m.code = 6;
 	m.rpiMode = false;
 	cout << endl << "Initialisation mode Follower" << endl;
 	channelSM->SendQueuingMsg((char*)&m, sizeof(ModeStruct));
-		
-	signal(SIGINT, (sig_t)bye);
 
 	while(1) {
 		before();
@@ -223,11 +221,14 @@ int  main (int argc,char* argv[]) {
 	    exit(1);
 	}
 
-	cout << "Host name " << s << endl; 
-	
+	//cout << "Host name " << s << endl; 
+	signal(SIGINT, (sig_t)bye);
+
 	channelController = new QueuingPort(0, 18002, argv[1]); 	// Client_PM vers controller
 	channelSM = new QueuingPort(0, 18003, argv[1]); 		// Client_PM vers com ground / SM
 	channelReceptionPM = new QueuingPort(1, 18001, s); 		// Server_PM	
+
+	cout << "Bonjour du Thread Fonctionnel " << getpid() << endl;
 
 	// generate thread
 	pthread_attr_t *thread_attributes;

@@ -40,7 +40,7 @@ int main (int argc,char* argv[]) {
 	}
 
 	pfp.code = 3;
-	cout << "Host name " << s << endl;
+	cout << "The com Ground Partition " << :getpid() << " is ready !" << endl;
 	QueuingPort channelOutPM(0, 18001, argv[1]); 	// Client
 	QueuingPort channelIn(1, 18003, s); 		// Server
 
@@ -58,6 +58,7 @@ int main (int argc,char* argv[]) {
 		if (status->code == 3) { // utilisation d'un type p
 			imageName = (PlanFilePath*)buffer;
 			string aux(imageName->filepath);
+			aux += ".jpg";
 			imageList[ptImageReceived] = aux;
 			ptImageReceived = (ptImageReceived + 1)%128;
 		}
@@ -80,13 +81,20 @@ int main (int argc,char* argv[]) {
 			sprintf(cmde, "sh uploadStoG.sh LogError.txt");
 			system(cmde);
 			while(ptImageSent != ptImageReceived){
-				string temp = strcat("ciphered",imageList[ptImageSent];
+				string temp = "ciphered" + imageList[ptImageSent];
 				
-				copiefichier(imageList[ptImageSent].c_str(), temp.c_str());
-				sprintf(cmde, "sh uploadStoG.sh %s", imageList[ptImageSent].c_str());
+				char* tempchar = new char[temp.length() + 1];
+				char* imgchar = new char[imageList[ptImageSent].length() + 1];
+				strcpy(tempchar, temp.c_str());
+				strcpy(imgchar, imageList[ptImageSent].c_str());
+				copiefichier(imgchar, tempchar);
+
+				sprintf(cmde, "sh uploadStoG.sh %s", temp.c_str());
 				system(cmde);
 				sleep(1);
 				sprintf(cmde, "rm %s", imageList[ptImageSent].c_str());
+				system(cmde);
+				sprintf(cmde, "rm %s", temp.c_str());
 				system(cmde);
 				ptImageSent = (ptImageSent + 1)%128;
 			}// lancer bash qui envoie chaque photo du tableau.

@@ -50,8 +50,8 @@ attitudeController:  attitudeController.cpp attitudeController.h
 cameraController:  cameraController.cpp cameraController.h
 	$(CC) -c cameraController.cpp cameraController.h
 
-comGroundManager: ARINC_Com.o statusManager.o comGroundManager.o
-	$(CC) ARINC_Com.o statusManager.o comGroundManager.o -o main_Com_ST
+comGroundManager: ARINC_Com.o statusManager.o AES.o comGroundManager.o
+	$(CC) ARINC_Com.o statusManager.o AES.o comGroundManager.o -o main_Com_ST
 
 ARINC_Com:  ARINC_Com.cpp ARINC_Com.h
 	$(CC) -c ARINC_Com.cpp ARINC_Com.h

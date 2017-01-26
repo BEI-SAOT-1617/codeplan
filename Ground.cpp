@@ -11,7 +11,7 @@ using namespace std;
 int main (int argc,char* argv[]) 
 {
 
-if (argc!=2) 
+if (argc!=3) 
 {
 	printf("T'as oublie l'argument banane ! Le hostname... \n");
 	exit (-1);
@@ -30,17 +30,17 @@ if (gethostname(s, 100) != 0) {
 }
 
 QueuingPort channelOut(0, 18003, argv[1]); 	//Client
-
+QueuingPort channelOut2(0,18003, argv[2]);	//Client 2
 channelOut.Display();
+channelOut2.Display();
 
-cout << "Host name " << argv[1] << endl; 
-cout << "Welcome to the Ground Station, what do you want to do ?" << endl;
+cout << "Welcome to the Ground Station " << getpid() << " ; " << argv[1] << ", what do you want to do ?" << endl;
 
 while (1) {
 	cout << "('p' to send a plan ; 'r' to receive the photos)" << endl;
 	char c;
 	scanf(" %c", &c);
-	
+
 	if (c == 'p'){	// Envoi d'un plan
 		cout << "What is the plan name ? (end it by '.txt'" << endl;
 		p.code = 5;
@@ -51,11 +51,14 @@ while (1) {
 		system(cmde);
 		sleep(2);
 		channelOut.SendQueuingMsg((char*)&p, sizeof(PlanName));
-		
+                channelOut2.SendQueuingMsg((char*)&p, sizeof(PlanName));
+
 		cout << "Plan sent !" << endl;
 	}else { // Demande des photos
 		p.code = 10;
 		channelOut.SendQueuingMsg((char*)&p, sizeof(PlanName));
+                channelOut2.SendQueuingMsg((char*)&p, sizeof(PlanName));
+
 		cout << "Receiving the images..." << endl;
 		sleep(2);
 	}
